@@ -2019,6 +2019,16 @@ body.dark .motivation-popup{background:linear-gradient(145deg,#2A2620,#232018)}
     /* Клиенты */
     $('#addClientBtn').addEventListener('click', () => openClientForm());
 
+    /* Плавающая кнопка «Записать встречу» */
+    $('#fabNewSession').addEventListener('click', () => {
+      if (!state.clients.length){
+        toast('Сначала добавьте клиента — встреча привязана к человеку');
+        setTimeout(() => openClientForm(), 600);
+        return;
+      }
+      openSessionModal({ date: fmt(new Date()) });
+    });
+
     /* Модалки */
     $('#dayClose').addEventListener('click', () => hideOverlay('dayOverlay'));
     $('#clientClose').addEventListener('click', () => hideOverlay('clientOverlay'));
