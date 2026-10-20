@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F8F5F0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Календарь Елены">
+<title>Елена Осинцева — календарь-записная книжка</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%232F5D5A'/%3E%3Ctext x='90' y='118' font-family='Georgia,serif' font-size='76' font-weight='600' fill='%23F3EFE7' text-anchor='middle'%3E%D0%95%D0%9E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ БАЗА + ТЕМЫ ═══════════ */
+:root{
+  --surface:#FFFFFF; --ink:#2B2A28; --ink-soft:#5B564E; --muted:#928B80;
+  --line:#EBE5DA; --line-soft:#F3EEE6;
+  --teal:#2F5D5A; --teal-soft:#E4EDEB; --terra:#C0714F; --terra-soft:#F7E8E0;
+  --sage:#7A9471; --sage-soft:#E9F0E6; --plum:#7B5E7B; --plum-soft:#F1E9F1;
+  --gold:#C99A3E; --gold-soft:#FAF0DA; --red:#C0392B; --red-soft:#FBEAE8;
+  --peach:#E8B591; --rose:#D8A5A5; --sky:#9DBCC9; --lav:#B7A8CE;
+  --shadow:0 1px 2px rgba(43,42,40,.04),0 14px 34px -14px rgba(43,42,40,.18);
+  --shadow-soft:0 1px 2px rgba(43,42,40,.03),0 10px 26px -14px rgba(43,42,40,.14);
+  --radius:18px;
+  /* базовый фон по умолчанию — Лаванда */
+  --bg:#F8F5F0; --bg-1:#F4EAD9; --bg-2:#E7EEEA; --bg-3:#F3E8EC;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.6' fill='%23B7A8CE' opacity='0.32'/%3E%3C/svg%3E");
+  --deco-size:60px 60px;
+}
+
+body.dark{
+  --surface:#1E1E24; --ink:#E8E6E1; --ink-soft:#B5B0A6; --muted:#7A7670;
+  --line:#34323A; --line-soft:#27252C;
+  --teal:#7CB5B0; --teal-soft:rgba(124,181,176,.13);
+  --terra:#D99A7A; --terra-soft:rgba(217,154,122,.13);
+  --sage:#A3BD95; --sage-soft:rgba(163,189,149,.13);
+  --plum:#B89AB8; --plum-soft:rgba(184,154,184,.13);
+  --gold:#D4AF5C; --gold-soft:rgba(212,175,92,.16);
+  --red:#E87668; --red-soft:rgba(232,118,104,.14);
+  --peach:#F0C4A4; --rose:#E0A8A8; --sky:#A8C4D4; --lav:#C4B5DC;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -14px rgba(0,0,0,.55);
+  --shadow-soft:0 1px 2px rgba(0,0,0,.2),0 10px 26px -14px rgba(0,0,0,.4);
+}
+
+/* ── 8 тем × light/dark ── */
+body[data-theme="lavender"]{
+  --bg:#F8F5F0; --bg-1:#F4EAD9; --bg-2:#E7EEEA; --bg-3:#F3E8EC;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.6' fill='%23B7A8CE' opacity='0.32'/%3E%3C/svg%3E");
+  --deco-size:60px 60px;
+}
+body.dark[data-theme="lavender"]{
+  --bg:#16141A; --bg-1:#221E2A; --bg-2:#1A2024; --bg-3:#221E24;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.6' fill='%23C4B5DC' opacity='0.18'/%3E%3C/svg%3E");
+}
+body[data-theme="dawn"]{
+  --bg:#FDF6EC; --bg-1:#FBE8CC; --bg-2:#F8DCC8; --bg-3:#FCE4D8;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Ccircle cx='45' cy='45' r='3' fill='%23E8B591' opacity='0.35'/%3E%3Ccircle cx='45' cy='45' r='12' stroke='%23E8B591' stroke-width='0.7' fill='none' opacity='0.2'/%3E%3C/svg%3E");
+  --deco-size:90px 90px;
+}
+body.dark[data-theme="dawn"]{
+  --bg:#1F1812; --bg-1:#2A1F15; --bg-2:#261A12; --bg-3:#2A1E14;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Ccircle cx='45' cy='45' r='3' fill='%23F0C4A4' opacity='0.2'/%3E%3Ccircle cx='45' cy='45' r='12' stroke='%23F0C4A4' stroke-width='0.7' fill='none' opacity='0.12'/%3E%3C/svg%3E");
+}
+body[data-theme="forest"]{
+  --bg:#F2F5EC; --bg-1:#E2ECD9; --bg-2:#D8E6CE; --bg-3:#E8F0DC;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 28 Q47 38 40 52 Q33 38 40 28 Z' fill='%238FB287' opacity='0.3'/%3E%3C/svg%3E");
+  --deco-size:80px 80px;
+}
+body.dark[data-theme="forest"]{
+  --bg:#121812; --bg-1:#1C2618; --bg-2:#16201A; --bg-3:#1A2418;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 28 Q47 38 40 52 Q33 38 40 28 Z' fill='%23A3BD95' opacity='0.16'/%3E%3C/svg%3E");
+}
+body[data-theme="ocean"]{
+  --bg:#F0F5F7; --bg-1:#DBE9F0; --bg-2:#D0E1EB; --bg-3:#DCE8EF;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='40'%3E%3Cpath d='M0 20 Q25 8 50 20 T100 20' stroke='%239DBCC9' stroke-width='1.2' fill='none' opacity='0.4'/%3E%3C/svg%3E");
+  --deco-size:100px 40px;
+}
+body.dark[data-theme="ocean"]{
+  --bg:#101820; --bg-1:#1A2530; --bg-2:#141E28; --bg-3:#18222C;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='40'%3E%3Cpath d='M0 20 Q25 8 50 20 T100 20' stroke='%23A8C4D4' stroke-width='1.2' fill='none' opacity='0.18'/%3E%3C/svg%3E");
+}
+body[data-theme="sunset"]{
+  --bg:#FCF0E8; --bg-1:#FAD9C5; --bg-2:#F5C9BF; --bg-3:#F8D8CE;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='3.5' fill='%23D89A7A' opacity='0.32'/%3E%3Ccircle cx='50' cy='50' r='14' stroke='%23D89A7A' stroke-width='0.6' fill='none' opacity='0.16'/%3E%3C/svg%3E");
+  --deco-size:100px 100px;
+}
+body.dark[data-theme="sunset"]{
+  --bg:#201612; --bg-1:#2C1F18; --bg-2:#281A16; --bg-3:#2A1C18;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='3.5' fill='%23F0C4A4' opacity='0.18'/%3E%3Ccircle cx='50' cy='50' r='14' stroke='%23F0C4A4' stroke-width='0.6' fill='none' opacity='0.1'/%3E%3C/svg%3E");
+}
+body[data-theme="night"]{
+  --bg:#ECEEF5; --bg-1:#DDE2EE; --bg-2:#D5DCEA; --bg-3:#E2E5F0;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70'%3E%3Cpath d='M35 22 L36.8 31 L45 33 L36.8 35 L35 44 L33.2 35 L25 33 L33.2 31 Z' fill='%238B9AC9' opacity='0.32'/%3E%3C/svg%3E");
+  --deco-size:70px 70px;
+}
+body.dark[data-theme="night"]{
+  --bg:#0F1020; --bg-1:#181A30; --bg-2:#12141F; --bg-3:#16182A;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70'%3E%3Cpath d='M35 22 L36.8 31 L45 33 L36.8 35 L35 44 L33.2 35 L25 33 L33.2 31 Z' fill='%23A8B4DC' opacity='0.22'/%3E%3C/svg%3E");
+}
+body[data-theme="bloom"]{
+  --bg:#FBF2F5; --bg-1:#F8E0E8; --bg-2:#F5D8E0; --bg-3:#FBE5EC;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cellipse cx='40' cy='40' rx='4' ry='7' fill='%23E0A8B8' opacity='0.3' transform='rotate(30 40 40)'/%3E%3C/svg%3E");
+  --deco-size:80px 80px;
+}
+body.dark[data-theme="bloom"]{
+  --bg:#1D1418; --bg-1:#2A1A22; --bg-2:#241620; --bg-3:#281A1E;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cellipse cx='40' cy='40' rx='4' ry='7' fill='%23E0A8B8' opacity='0.18' transform='rotate(30 40 40)'/%3E%3C/svg%3E");
+}
+body[data-theme="paper"]{
+  --bg:#F6F1E8; --bg-1:#EFE6D4; --bg-2:#EDE5D6; --bg-3:#F2EADB;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='0.7' fill='%23C8B898' opacity='0.45'/%3E%3C/svg%3E");
+  --deco-size:40px 40px;
+}
+body.dark[data-theme="paper"]{
+  --bg:#181612; --bg-1:#231E16; --bg-2:#1C1914; --bg-3:#221D16;
+  --deco:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='0.7' fill='%23C8B898' opacity='0.16'/%3E%3C/svg%3E");
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  color:var(--ink); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1100px 600px at 8% -12%, var(--bg-1) 0%, transparent 58%),
+    radial-gradient(900px 520px at 100% 0%, var(--bg-2) 0%, transparent 55%),
+    radial-gradient(800px 500px at 20% 100%, var(--bg-3) 0%, transparent 60%),
+    var(--bg);
+  background-attachment:fixed; min-height:100%;
+  transition:background .4s ease, color .3s;
+  position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:var(--deco);background-size:var(--deco-size);
+  pointer-events:none;z-index:0;transition:opacity .3s;
+}
+.wrap{position:relative;z-index:1}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font:inherit;color:inherit}
+
+/* ── Header ── */
+.wrap{max-width:1180px;margin:0 auto;padding:22px 18px 60px}
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-bottom:16px;padding:16px 18px;border-radius:22px;
+  background:linear-gradient(120deg,rgba(255,255,255,.78),rgba(255,255,255,.55));
+  border:1px solid var(--line);box-shadow:var(--shadow-soft);
+  position:relative;overflow:hidden;transition:background .3s,border-color .3s;
+}
+body.dark .top{background:linear-gradient(120deg,rgba(40,40,48,.85),rgba(30,30,36,.75))}
+.top::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:.75;
+  background:linear-gradient(90deg,var(--sage),var(--sky) 30%,var(--lav) 60%,var(--rose) 85%,var(--peach));
+}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.monogram{
+  width:56px;height:56px;flex:none;border-radius:50%;display:grid;place-items:center;
+  color:#FFF;font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:22px;letter-spacing:.5px;font-weight:600;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 55%),
+             linear-gradient(145deg,#A6C4BE,#7B9FB5 40%,#A890BA);
+  box-shadow:0 10px 24px -10px rgba(123,159,181,.65),inset 0 0 0 2px rgba(255,255,255,.35);
+}
+.brand h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;line-height:1.1;color:var(--ink)}
+.brand p{margin:4px 0 0;font-size:12px;color:var(--ink-soft);letter-spacing:.04em;
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.brand p .sep{width:4px;height:4px;border-radius:50%;
+  background:linear-gradient(135deg,var(--lav),var(--rose));opacity:.85}
+.brand p .tag{color:var(--plum);font-style:italic;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:14px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools button{
+  padding:9px 14px;border-radius:11px;font-size:13px;font-weight:500;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+  transition:.18s;
+}
+.tools button:hover{color:var(--ink);transform:translateY(-1px);box-shadow:0 6px 16px -8px rgba(43,42,40,.2)}
+.tools .icon-btn{width:38px;padding:0;height:38px;display:grid;place-items:center;font-size:16px}
+.tools button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ── Tabs ── */
+.tabs{
+  display:flex;gap:4px;margin-bottom:20px;padding:4px;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  width:fit-content;box-shadow:var(--shadow-soft);
+}
+.tab{padding:9px 18px;border-radius:10px;font-size:13.5px;font-weight:500;
+  color:var(--muted);transition:.16s;display:flex;align-items:center;gap:8px}
+.tab:hover{color:var(--ink)}
+.tab.active{background:linear-gradient(135deg,var(--teal),#244743);color:#FFF;
+  box-shadow:0 4px 12px -4px rgba(47,93,90,.5)}
+.tab .count{background:rgba(255,255,255,.2);padding:1px 7px;border-radius:100px;
+  font-size:11px;font-weight:600;min-width:18px;text-align:center}
+.tab.active .count{background:rgba(255,255,255,.25)}
+.tab:not(.active) .count{background:var(--line-soft);color:var(--muted)}
+
+.view{display:none;animation:fade .2s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:22px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);transition:background .3s,border-color .3s}
+
+/* ── Calendar ── */
+.cal{padding:18px 20px 16px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.month{display:flex;align-items:baseline;gap:10px}
+.month h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:26px;font-weight:600;text-transform:capitalize;color:var(--ink)}
+.month span{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.nav{display:flex;gap:6px}
+.nav button{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+  transition:.16s;font-size:15px}
+.nav button:hover{background:var(--teal);border-color:var(--teal);color:#FFF}
+.nav .today-btn{width:auto;padding:0 14px;font-size:12.5px}
+
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px}
+.dow div{text-align:center;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);padding:6px 0;font-weight:500}
+.dow div:nth-child(6),.dow div:nth-child(7){color:var(--terra);opacity:.7}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+
+.cell{position:relative;min-height:82px;border-radius:12px;padding:6px 7px 8px;
+  display:flex;flex-direction:column;gap:2px;text-align:left;
+  background:transparent;border:1.5px solid transparent;transition:.16s;overflow:hidden}
+.cell:hover{background:var(--line-soft)}
+.cell.out{opacity:.32}
+.cell .num{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;
+  font-size:12px;font-weight:500;flex:none}
+.cell.today .num{background:linear-gradient(140deg,#5C8A80,#3F6D78);color:#FFF;font-weight:600;
+  box-shadow:0 3px 8px -3px rgba(47,93,90,.5)}
+.cell.sel{background:linear-gradient(140deg,var(--plum-soft),var(--teal-soft));
+  box-shadow:inset 0 0 0 1.5px rgba(123,94,123,.28)}
+.minis{display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mini{display:flex;align-items:center;gap:4px;font-size:10px;line-height:1.3;
+  color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:1px 0;border:none;background:none;text-align:left;width:100%}
+.mini:hover{color:var(--ink)}
+.mini i{width:5px;height:5px;border-radius:50%;flex:none;display:block}
+.more{font-size:9.5px;color:var(--muted);padding-left:8px}
+.moodbar{margin-top:auto;height:3px;border-radius:3px;width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--line-soft);font-size:11px;color:var(--muted)}
+.legend i{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px}
+.legend span{display:inline-flex;align-items:center}
+
+/* ── Sidebar ── */
+.side{display:flex;flex-direction:column;gap:16px}
+.side-card{padding:18px;position:relative;overflow:hidden}
+.side-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:.7}
+.card.motivation::before{background:linear-gradient(90deg,var(--peach),var(--rose))}
+.card.quote-card::before{background:linear-gradient(90deg,var(--sage),var(--sky))}
+.card.upcoming-card::before{background:linear-gradient(90deg,var(--sky),var(--lav))}
+.card.stats-card::before{background:linear-gradient(90deg,var(--lav),var(--peach))}
+.side-title{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin:0 0 12px}
+
+.motivation{background:linear-gradient(165deg,var(--surface) 0%,var(--bg-1) 100%)}
+.greet{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);
+  font-weight:600;display:flex;align-items:center;gap:7px}
+.greet .dot{width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(135deg,var(--peach),var(--rose));
+  box-shadow:0 0 0 3px rgba(232,181,145,.22);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.6}}
+.affirm{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;line-height:1.4;
+  font-style:italic;color:var(--ink);margin:10px 0 14px}
+.streak{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--line-soft);margin-bottom:10px}
+.flame{font-size:20px;filter:grayscale(.15)}
+.streak.hot .flame{filter:none}
+.streak-n{font-size:18px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.streak-n small{font-size:11px;font-weight:400;color:var(--muted);margin-left:2px}
+.streak-l{font-size:10px;color:var(--muted);margin-top:1px}
+.streak-best{font-size:9.5px;color:var(--gold);font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;background:var(--gold-soft);padding:3px 6px;border-radius:6px}
+.nudge{font-size:12px;line-height:1.5;color:var(--ink-soft);
+  padding:9px 12px;border-left:3px solid var(--peach);
+  background:var(--surface);border-radius:0 10px 10px 0}
+.nudge b{color:var(--ink);font-weight:600}
+
+.quote{font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;line-height:1.45;
+  font-style:italic;margin:0}
+.quote-by{margin:9px 0 0;font-size:11.5px;color:var(--muted);font-style:normal;font-family:'Inter',sans-serif}
+.quote-mark{font-family:'Cormorant Garamond',Georgia,serif;font-size:40px;line-height:.6;
+  background:linear-gradient(120deg,var(--sage),var(--sky));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  opacity:.65;display:block;margin-bottom:4px}
+
+.up{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.up li{display:flex;gap:10px;align-items:flex-start;padding:7px 5px;border-radius:10px;
+  transition:background .15s;cursor:pointer}
+.up li:hover{background:var(--line-soft)}
+.up .date-chip{flex:none;width:36px;text-align:center;border-radius:9px;padding:3px 0;
+  background:linear-gradient(140deg,var(--sky-soft),var(--lav));line-height:1.15}
+.up .date-chip b{display:block;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.up .date-chip small{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.up .info{min-width:0;flex:1}
+.up .t{font-size:12.5px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up .s{font-size:10.5px;color:var(--muted);margin-top:1px}
+.empty{font-size:12.5px;color:var(--muted);padding:6px;font-style:italic}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{border:1px solid var(--line-soft);border-radius:11px;padding:9px 10px}
+.stat:nth-child(1){background:var(--teal-soft)}
+.stat:nth-child(2){background:var(--terra-soft)}
+.stat:nth-child(3){background:var(--sage-soft)}
+.stat:nth-child(4){background:var(--plum-soft)}
+.stat b{display:block;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat small{font-size:10px;color:var(--ink-soft)}
+
+/* ── Clients ── */
+.clients-head{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.clients-head h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:600}
+.primary-btn{padding:10px 18px;border-radius:11px;font-size:13px;font-weight:500;
+  background:linear-gradient(135deg,var(--teal),#244743);color:#FFF;
+  box-shadow:0 6px 16px -6px rgba(47,93,90,.5);transition:.16s;
+  display:inline-flex;align-items:center;gap:7px}
+.primary-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px -6px rgba(47,93,90,.6)}
+.ghost-btn{padding:9px 14px;border-radius:10px;font-size:12.5px;font-weight:500;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:.16s}
+.ghost-btn:hover{color:var(--ink);background:var(--line-soft)}
+.danger-btn{color:var(--red)}
+.danger-btn:hover{background:var(--red-soft);border-color:var(--red)}
+
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.client-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:14px;display:flex;gap:12px;align-items:center;
+  cursor:pointer;transition:.18s;box-shadow:var(--shadow-soft);
+  position:relative;overflow:hidden}
+.client-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
+  background:var(--client-color,var(--teal))}
+.client-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.client-avatar{width:46px;height:46px;border-radius:50%;flex:none;
+  display:grid;place-items:center;color:#FFF;font-weight:600;font-size:15px;
+  font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.5px;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.client-info{min-width:0;flex:1}
+.client-name{font-size:14px;font-weight:600;line-height:1.3;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.client-meta{font-size:11.5px;color:var(--muted);margin-top:2px;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.client-meta .badge{background:var(--line-soft);padding:1px 6px;border-radius:6px;
+  font-size:10px;font-weight:500;letter-spacing:.02em}
+.clients-empty{grid-column:1/-1;text-align:center;padding:50px 20px;
+  background:var(--surface);border:1px dashed var(--line);border-radius:16px}
+.clients-empty h3{margin:0 0 8px;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px}
+.clients-empty p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.5}
+
+/* ── Modal ── */
+.overlay{position:fixed;inset:0;background:rgba(20,20,20,.5);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;pointer-events:none;transition:opacity .22s;z-index:50}
+.overlay.on{opacity:1;pointer-events:auto}
+.modal{background:var(--surface);border-radius:20px;width:100%;max-width:560px;
+  max-height:90vh;overflow-y:auto;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);
+  transform:translateY(14px) scale(.98);transition:transform .24s cubic-bezier(.2,.8,.3,1);
+  display:flex;flex-direction:column}
+.overlay.on .modal{transform:none}
+.modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--line-soft);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+  position:sticky;top:0;background:var(--surface);border-radius:20px 20px 0 0;z-index:2}
+.modal-head .wd{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);font-weight:500}
+.modal-head h3{margin:3px 0 0;font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:23px;font-weight:600;text-transform:capitalize;line-height:1.2;color:var(--ink)}
+.close{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:var(--line-soft);color:var(--ink-soft);font-size:17px;transition:.16s}
+.close:hover{background:var(--terra);color:#FFF;transform:rotate(90deg)}
+.modal-body{padding:16px 20px 22px;flex:1;min-height:0}
+.modal-affirm{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;line-height:1.45;
+  font-style:italic;color:var(--ink-soft);padding:10px 13px;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--bg-1),var(--bg-3));
+  border-radius:12px;border-left:3px solid var(--gold)}
+
+.block{margin-bottom:18px}
+.block-label{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.block-label .action{color:var(--teal);font-weight:500;text-transform:none;letter-spacing:.02em;
+  font-size:11.5px;cursor:pointer;padding:3px 8px;border-radius:6px;transition:.15s}
+.block-label .action:hover{background:var(--teal-soft)}
+
+.state-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pips{display:flex;gap:6px}
+.pip{width:30px;height:30px;border-radius:9px;border:1.5px solid var(--line);
+  background:var(--bg-1);display:grid;place-items:center;font-size:11.5px;
+  font-weight:600;color:var(--muted);transition:.15s}
+.pip:hover{border-color:var(--muted);transform:translateY(-1px)}
+.pip.on{color:#FFF;border-color:transparent}
+.hint{font-size:10px;color:var(--muted);margin-top:6px;font-style:italic}
+
+/* ── Sessions list ── */
+.sess-list{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.sess{background:var(--bg-1);border:1px solid var(--line-soft);border-radius:12px;
+  padding:10px 12px;transition:.16s}
+.sess:hover{border-color:var(--line)}
+.sess-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.sess-avatar{width:32px;height:32px;border-radius:50%;flex:none;
+  display:grid;place-items:center;color:#FFF;font-weight:600;font-size:11.5px;
+  font-family:'Cormorant Garamond',Georgia,serif}
+.sess-body{flex:1;min-width:0}
+.sess-client{font-size:13px;font-weight:600;line-height:1.3}
+.sess-topic{font-size:12px;color:var(--ink-soft);margin-top:1px;line-height:1.35}
+.sess-meta{font-size:10px;color:var(--muted);margin-top:3px;
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sess-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--muted)}
+.sess-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.sess-actions button{padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:.15s}
+.sess-actions button:hover{background:var(--line-soft);color:var(--ink)}
+.sess-actions .play{color:var(--teal);border-color:var(--teal-soft)}
+.sess-actions .play:hover{background:var(--teal-soft)}
+.sess-actions .del:hover{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+.sess audio{width:100%;height:34px;margin-top:6px;border-radius:8px}
+.sess-transcript{font-size:11.5px;line-height:1.5;color:var(--ink-soft);
+  background:var(--surface);padding:8px 10px;border-radius:8px;margin-top:6px;
+  border:1px dashed var(--line);max-height:80px;overflow-y:auto;white-space:pre-wrap}
+
+/* ── Events ── */
+.ev-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:5px}
+.ev{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:11px;
+  background:var(--bg-1);border:1px solid var(--line-soft)}
+.ev .chk{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--muted);
+  flex:none;display:grid;place-items:center;background:var(--surface)}
+.ev .chk svg{opacity:0}
+.ev.done .chk{background:var(--sage);border-color:var(--sage)}
+.ev.done .chk svg{opacity:1}
+.ev.done .ev-t{text-decoration:line-through;color:var(--muted)}
+.ev-body{flex:1;min-width:0}
+.ev-t{font-size:13px;line-height:1.35;word-break:break-word}
+.ev-m{font-size:10.5px;color:var(--muted);margin-top:1px;display:flex;gap:6px}
+.ev-m em{font-style:normal;font-weight:500}
+.ev-del{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;
+  color:var(--muted);font-size:14px;flex:none;transition:.15s}
+.ev-del:hover{background:var(--red-soft);color:var(--red)}
+
+.add-form{display:grid;grid-template-columns:70px 1fr 38px;gap:6px}
+.add-form input,.add-form select{padding:9px 10px;border-radius:10px;
+  border:1px solid var(--line);background:var(--bg-1);font-size:12.5px;outline:none;
+  transition:.15s;width:100%}
+.add-form input:focus,.add-form select:focus,.note-area:focus,.form-input:focus{
+  border-color:var(--teal);background:var(--surface);box-shadow:0 0 0 3px rgba(47,93,90,.1)}
+.add-form select{grid-column:1/-1}
+.add-form .add-btn{background:linear-gradient(140deg,#4A7A74,#2F5D5A);color:#FFF;
+  border-radius:10px;display:grid;place-items:center;font-size:18px;
+  box-shadow:0 4px 10px -4px rgba(47,93,90,.5)}
+.add-form .add-btn:hover{background:linear-gradient(140deg,#3D6B66,#244743)}
+
+.note-area{width:100%;min-height:80px;resize:vertical;padding:11px 12px;border-radius:12px;
+  border:1px solid var(--line);background:var(--bg-1);font-size:13px;line-height:1.55;
+  outline:none;transition:.15s;font-family:inherit}
+
+/* ── Recorder ── */
+.recorder{background:linear-gradient(165deg,var(--bg-1),var(--bg-3));
+  border-radius:14px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;
+  border:1px solid var(--line-soft);transition:.3s}
+.recorder.recording{background:linear-gradient(165deg,var(--red-soft),var(--bg-3))}
+.rec-status{text-align:center;margin-bottom:12px}
+.rec-time{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;
+  letter-spacing:.06em;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.recorder.recording .rec-time{color:var(--red)}
+.rec-hint{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+.rec-controls{display:flex;justify-content:center;gap:12px;align-items:center}
+.rec-btn{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(140deg,#D64545,#A82B2B);color:#FFF;
+  box-shadow:0 8px 22px -8px rgba(192,57,43,.6);transition:.18s;position:relative}
+.rec-btn:hover{transform:scale(1.05)}
+.rec-btn .icon{font-size:22px;line-height:1;display:block;transition:.2s}
+.recorder.recording .rec-btn{background:linear-gradient(140deg,#C0392B,#7B1F1F);
+  animation:recPulse 1.5s ease-in-out infinite}
+.recorder.recording .rec-btn .icon{border-radius:4px;width:18px;height:18px;
+  background:#FFF;font-size:0}
+@keyframes recPulse{
+  0%,100%{box-shadow:0 8px 22px -8px rgba(192,57,43,.6),0 0 0 0 rgba(192,57,43,.3)}
+  50%{box-shadow:0 8px 22px -8px rgba(192,57,43,.6),0 0 0 14px rgba(192,57,43,0)}
+}
+.rec-player{margin-top:12px}
+.rec-player audio{width:100%;height:36px;border-radius:10px;margin-bottom:6px}
+.rec-player button{width:100%;padding:8px;border-radius:9px;font-size:12px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:.15s}
+.rec-player button:hover{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+
+.transcript-box{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.transcript-head{font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between}
+.transcript-head .live{color:var(--red);display:inline-flex;align-items:center;gap:5px}
+.transcript-head .live::before{content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--red);animation:pulse 1.2s infinite}
+.transcript-text{font-size:12px;line-height:1.55;color:var(--ink);
+  background:var(--surface);padding:10px 12px;border-radius:10px;
+  border:1px solid var(--line-soft);min-height:44px;max-height:120px;overflow-y:auto;
+  white-space:pre-wrap;word-wrap:break-word}
+.transcript-text:empty::before{content:'Распознанный текст появится здесь…';
+  color:var(--muted);font-style:italic;font-size:11.5px}
+.transcript-unsupported{font-size:11px;color:var(--muted);font-style:italic;
+  padding:8px 10px;background:var(--bg-1);border-radius:8px;line-height:1.4}
+
+/* ── Client detail ── */
+.client-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:14px;
+  border-bottom:1px solid var(--line-soft)}
+.client-header .client-avatar{width:56px;height:56px;font-size:18px}
+.client-header-info{flex:1;min-width:0}
+.client-header-info h3{margin:0;font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:22px;font-weight:600;line-height:1.2}
+.client-header-info p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.client-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.client-actions button{padding:8px 12px;border-radius:9px;font-size:12px;font-weight:500;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:.15s}
+.client-actions button:hover{background:var(--line-soft);color:var(--ink)}
+.client-actions .primary{background:linear-gradient(135deg,var(--teal),#244743);color:#FFF;
+  border:none;box-shadow:0 4px 12px -4px rgba(47,93,90,.5)}
+.client-actions .primary:hover{transform:translateY(-1px)}
+
+/* ── Forms ── */
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin-bottom:6px}
+.form-input{width:100%;padding:10px 12px;border-radius:11px;
+  border:1px solid var(--line);background:var(--bg-1);font-size:13.5px;outline:none;
+  transition:.15s;font-family:inherit}
+.form-input:focus{border-color:var(--teal);background:var(--surface);
+  box-shadow:0 0 0 3px rgba(47,93,90,.1)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;
+  padding-top:14px;border-top:1px solid var(--line-soft)}
+.form-actions button{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:500;transition:.15s}
+.form-actions .cancel{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft)}
+.form-actions .cancel:hover{background:var(--line-soft)}
+.form-actions .save{background:linear-gradient(135deg,var(--teal),#244743);color:#FFF;
+  box-shadow:0 4px 12px -4px rgba(47,93,90,.5)}
+.form-actions .save:hover{transform:translateY(-1px)}
+
+/* ── Theme panel ── */
+.theme-panel{position:fixed;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;
+  padding:14px;width:300px;
+  box-shadow:0 24px 60px -18px rgba(43,42,40,.4),0 2px 4px rgba(43,42,40,.06);
+  z-index:100;opacity:0;pointer-events:none;
+  transform:translateY(-8px) scale(.96);transform-origin:top right;
+  transition:.22s cubic-bezier(.2,.8,.3,1)}
+.theme-panel.on{opacity:1;pointer-events:auto;transform:none}
+.theme-panel-head{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;padding:0 2px}
+.theme-panel-head span{font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);font-weight:600}
+.theme-panel-close{width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;color:var(--muted);font-size:16px;transition:.15s}
+.theme-panel-close:hover{background:var(--line-soft);color:var(--ink)}
+.mode-switch{display:flex;gap:4px;padding:3px;background:var(--bg-1);
+  border-radius:10px;margin-bottom:12px}
+.mode-switch button{flex:1;padding:7px;border-radius:7px;font-size:12px;font-weight:500;
+  color:var(--muted);transition:.15s}
+.mode-switch button.active{background:var(--surface);color:var(--ink);
+  box-shadow:0 2px 6px rgba(43,42,40,.1)}
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.theme-opt{display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:8px 4px;border-radius:11px;
+  border:1.5px solid transparent;background:var(--bg-1);
+  transition:.15s;text-align:center;width:100%}
+.theme-opt:hover{background:var(--surface);border-color:var(--line);transform:translateY(-1px)}
+.theme-opt.on{border-color:var(--ink-soft);background:var(--surface)}
+.theme-swatch{width:100%;aspect-ratio:1.4;border-radius:8px;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.theme-name{font-size:10.5px;color:var(--ink-soft);font-weight:500;line-height:1.2}
+.theme-opt.on .theme-name{color:var(--ink);font-weight:600}
+
+/* ── Toast / Celebrations ── */
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,14px);
+  background:linear-gradient(120deg,#3A3836,#2B2A28);color:#F3EFE7;
+  padding:11px 22px;border-radius:100px;font-size:12.5px;letter-spacing:.02em;
+  opacity:0;pointer-events:none;transition:.28s;z-index:99;
+  box-shadow:0 12px 30px -10px rgba(0,0,0,.5);max-width:calc(100vw - 32px);
+  text-align:center;line-height:1.4}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.celebrate{background:linear-gradient(120deg,#4A7A74,#2F5D5A);
+  box-shadow:0 12px 30px -10px rgba(47,93,90,.6);
+  font-size:13.5px;padding:14px 24px;font-weight:500}
+
+.confetti{position:fixed;top:-12px;width:10px;height:10px;border-radius:2px;
+  pointer-events:none;z-index:98;animation:confettiFall linear forwards}
+@keyframes confettiFall{
+  to{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+.motivation-popup{
+  position:fixed;bottom:22px;right:22px;max-width:340px;
+  background:linear-gradient(145deg,#FFFCF6,#FBF4EA);
+  border:1px solid var(--line);border-radius:16px;padding:14px 16px;
+  box-shadow:0 20px 50px -14px rgba(43,42,40,.35);
+  z-index:97;opacity:0;transform:translateY(20px) scale(.95);
+  transition:.32s cubic-bezier(.2,.8,.3,1);pointer-events:none;
+}
+body.dark .motivation-popup{background:linear-gradient(145deg,#2A2620,#232018)}
+.motivation-popup.on{opacity:1;transform:none}
+.motivation-popup .mp-icon{font-size:22px;margin-bottom:6px;display:block}
+.motivation-popup .mp-text{font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:15.5px;line-height:1.4;font-style:italic;color:var(--ink)}
+
+/* ── Responsive ── */
+@media (max-width:960px){.layout{grid-template-columns:1fr}.side{order:2}}
+@media (max-width:640px){
+  .wrap{padding:14px 12px 46px}
+  .top{padding:14px 15px;border-radius:18px}
+  .brand h1{font-size:23px}
+  .brand p{font-size:11px}
+  .brand p .tag{font-size:13px}
+  .monogram{width:48px;height:48px;font-size:18px}
+  .cal{padding:14px 12px 12px}
+  .month h2{font-size:20px}
+  .cell{min-height:48px;padding:4px 5px;border-radius:9px}
+  .cell .num{width:21px;height:21px;font-size:11px}
+  .minis,.more{display:none}
+  .moodbar{height:2.5px}
+  .dow div{font-size:9px;letter-spacing:.03em}
+  .state-row{grid-template-columns:1fr}
+  .add-form{grid-template-columns:1fr 1fr 38px}
+  .add-form select{grid-column:1/-1}
+  .modal-head{padding:16px 16px 12px}
+  .modal-body{padding:14px 16px 20px}
+  .modal-head h3{font-size:20px}
+  .affirm{font-size:16px}
+  .tabs{width:100%}
+  .tab{flex:1;justify-content:center}
+  .rec-time{font-size:26px}
+  .rec-btn{width:56px;height:56px}
+  .clients-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .client-card{padding:11px;flex-direction:column;align-items:flex-start;gap:8px}
+  .client-avatar{width:38px;height:38px;font-size:13px}
+  .client-name{font-size:13px}
+  .form-row-2{grid-template-columns:1fr}
+  .theme-panel{width:min(300px,calc(100vw - 24px))}
+  .motivation-popup{right:12px;left:12px;max-width:none;bottom:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="monogram">ЕО</div>
+      <div>
+        <h1>Елена Осинцева</h1>
+        <p>
+          <span>Психолог</span><span class="sep"></span>
+          <span>Преподаватель</span><span class="sep"></span>
+          <span class="tag">и прекрасный человек</span>
+        </p>
+      </div>
+    </div>
+    <div class="tools">
+      <button id="themeBtn" class="icon-btn" aria-label="Оформление">🎨</button>
+      <button id="cloudBtn" class="icon-btn" aria-label="Облако">☁️</button>
+      <button id="exportBtn">Экспорт</button>
+      <button id="importBtn">Импорт</button>
+      <input type="file" id="fileInput" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="calendar">📅 Календарь</button>
+    <button class="tab" data-tab="clients">👥 Клиенты <span class="count" id="clientCount">0</span></button>
+  </nav>
+
+  <section id="view-calendar" class="view active">
+    <div class="layout">
+      <main class="card cal">
+        <div class="cal-head">
+          <div class="month">
+            <h2 id="monthLabel">—</h2>
+            <span id="yearLabel"></span>
+          </div>
+          <div class="nav">
+            <button id="prevBtn">‹</button>
+            <button id="todayBtn" class="today-btn">Сегодня</button>
+            <button id="nextBtn">›</button>
+          </div>
+        </div>
+        <div class="dow">
+          <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="legend">
+          <span><i style="background:var(--teal)"></i>Консультация</span>
+          <span><i style="background:var(--terra)"></i>Занятие</span>
+          <span><i style="background:var(--sage)"></i>Личное</span>
+          <span><i style="background:var(--plum)"></i>Встреча с клиентом</span>
+        </div>
+      </main>
+
+      <aside class="side">
+        <section class="card side-card motivation">
+          <div class="greet"><span class="dot"></span><span id="greetText">—</span></div>
+          <p class="affirm" id="affirmText">—</p>
+          <div class="streak" id="streakBox">
+            <span class="flame">🔥</span>
+            <div style="flex:1;min-width:0">
+              <div class="streak-n" id="streakNum">0 <small>дней</small></div>
+              <div class="streak-l" id="streakLabel">заботы о себе</div>
+            </div>
+            <span class="streak-best" id="streakBest" style="display:none"></span>
+          </div>
+          <div class="nudge" id="nudgeText">—</div>
+        </section>
+
+        <section class="card side-card quote-card">
+          <span class="quote-mark">“</span>
+          <p class="quote" id="quoteText">—</p>
+          <p class="quote-by" id="quoteBy"></p>
+        </section>
+
+        <section class="card side-card upcoming-card">
+          <h3 class="side-title">Ближайшие дела</h3>
+          <ul class="up" id="upcoming"></ul>
+        </section>
+
+        <section class="card side-card stats-card">
+          <h3 class="side-title">Итоги месяца</h3>
+          <div class="stats" id="stats"></div>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <section id="view-clients" class="view">
+    <div class="clients-head">
+      <h2>Клиенты</h2>
+      <button class="primary-btn" id="addClientBtn">+ Новый клиент</button>
+    </div>
+    <div class="clients-grid" id="clientsGrid"></div>
+  </section>
+</div>
+
+<!-- ═══════ Тема ═══════ -->
+<div class="theme-panel" id="themePanel">
+  <div class="theme-panel-head">
+    <span>Оформление</span>
+    <button class="theme-panel-close" id="themeClose">×</button>
+  </div>
+  <div class="mode-switch">
+    <button data-mode="light" id="modeLight">☀️ Светлая</button>
+    <button data-mode="dark" id="modeDark">🌙 Тёмная</button>
+  </div>
+  <div class="theme-grid" id="themeGrid"></div>
+</div>
+
+<!-- ═══════ День ═══════ -->
+<div class="overlay" id="dayOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="wd" id="mWeekday"></div>
+        <h3 id="mDate"></h3>
+      </div>
+      <button class="close" id="dayClose">×</button>
+    </div>
+    <div class="modal-body" id="dayBody"></div>
+  </div>
+</div>
+
+<!-- ═══════ Клиент — карточка ═══════ -->
+<div class="overlay" id="clientOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="wd">Карточка клиента</div>
+        <h3 id="clientTitle">—</h3>
+      </div>
+      <button class="close" id="clientClose">×</button>
+    </div>
+    <div class="modal-body" id="clientBody"></div>
+  </div>
+</div>
+
+<!-- ═══════ Клиент — форма ═══════ -->
+<div class="overlay" id="clientFormOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="wd" id="cfWd">Клиент</div>
+        <h3 id="cfTitle">Новый клиент</h3>
+      </div>
+      <button class="close" id="clientFormClose">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="clientForm">
+        <div class="form-row">
+          <label>Имя *</label>
+          <input class="form-input" id="cfName" required maxlength="60" placeholder="Имя и фамилия">
+        </div>
+        <div class="form-row-2">
+          <div class="form-row">
+            <label>Возраст</label>
+            <input class="form-input" id="cfAge" maxlength="10" placeholder="например, 12">
+          </div>
+          <div class="form-row">
+            <label>Контакт</label>
+            <input class="form-input" id="cfContact" maxlength="60" placeholder="телефон или мессенджер">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Общая заметка</label>
+          <textarea class="form-input" id="cfNote" rows="3" placeholder="Ключевое о клиенте, запрос, особенности…"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="cancel" id="cfCancel">Отмена</button>
+          <button type="submit" class="save" id="cfSave">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ Встреча / диктофон ═══════ -->
+<div class="overlay" id="sessionOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="wd" id="sWd">Встреча</div>
+        <h3 id="sTitle">Новая встреча</h3>
+      </div>
+      <button class="close" id="sessionClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row-2">
+        <div class="form-row">
+          <label>Клиент *</label>
+          <select class="form-input" id="sClient"></select>
+        </div>
+        <div class="form-row">
+          <label>Дата</label>
+          <input class="form-input" type="date" id="sDate">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Тема встречи *</label>
+        <input class="form-input" id="sTopic" maxlength="120" placeholder="Например, тревога перед экзаменом">
+      </div>
+
+      <div class="recorder" id="recorder">
+        <div class="rec-status">
+          <div class="rec-time" id="recTime">00:00</div>
+          <div class="rec-hint" id="recHint">Нажмите кнопку, чтобы начать запись</div>
+        </div>
+        <div class="rec-controls">
+          <button class="rec-btn" id="recBtn" aria-label="Запись">
+            <span class="icon">⏺</span>
+          </button>
+        </div>
+        <div class="rec-player" id="recPlayer" style="display:none">
+          <audio controls id="recAudio" preload="metadata"></audio>
+          <button id="recDelete" type="button">Удалить запись</button>
+        </div>
+
+        <div class="transcript-box" id="transcriptBox">
+          <div class="transcript-head">
+            <span>Расшифровка</span>
+            <span id="transcriptStatus"></span>
+          </div>
+          <div class="transcript-text" id="transcriptText"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Заметки после встречи</label>
+        <textarea class="form-input" id="sNotes" rows="4" placeholder="Что обсуждали, что заметили, план дальше…"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel" id="sCancel">Отмена</button>
+        <button type="button" class="save" id="sSave">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="motivation-popup" id="mpopup">
+  <span class="mp-icon" id="mpIcon">✨</span>
+  <div class="mp-text" id="mpText"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ═══════ Константы ═══════ */
+  const KEY      = 'osintseva_calendar_v3';
+  const KEY_META = 'osintseva_meta_v3';
+  const DB_NAME  = 'osintseva_audio';
+  const STORE    = 'recordings';
+  const AVATAR_COLORS = ['#C0714F','#2F5D5A','#7A9471','#7B5E7B','#C99A3E','#9DBCC9','#D8A5A5','#B7A8CE'];
+
+  const THEMES = [
+    { key:'lavender', name:'Лаванда',  bg1:'#F4EAD9', bg2:'#E7EEEA', bg3:'#F3E8EC' },
+    { key:'dawn',     name:'Рассвет',  bg1:'#FBE8CC', bg2:'#F8DCC8', bg3:'#FCE4D8' },
+    { key:'forest',   name:'Лес',      bg1:'#E2ECD9', bg2:'#D8E6CE', bg3:'#E8F0DC' },
+    { key:'ocean',    name:'Океан',    bg1:'#DBE9F0', bg2:'#D0E1EB', bg3:'#DCE8EF' },
+    { key:'sunset',   name:'Закат',    bg1:'#FAD9C5', bg2:'#F5C9BF', bg3:'#F8D8CE' },
+    { key:'night',    name:'Ночь',     bg1:'#DDE2EE', bg2:'#D5DCEA', bg3:'#E2E5F0' },
+    { key:'bloom',    name:'Цветение', bg1:'#F8E0E8', bg2:'#F5D8E0', bg3:'#FBE5EC' },
+    { key:'paper',    name:'Бумага',   bg1:'#EFE6D4', bg2:'#EDE5D6', bg3:'#F2EADB' }
+  ];
+
+  const TYPES = {
+    consult:  { label:'Консультация', icon:'🧠', color:'var(--teal)' },
+    class:    { label:'Занятие',      icon:'📚', color:'var(--terra)' },
+    personal: { label:'Личное',       icon:'🌿', color:'var(--sage)' },
+    method:   { label:'Методика',     icon:'📝', color:'var(--plum)' }
+  };
+
+  const MONTHS = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+  const MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const WEEKDAYS = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+  const WEEKDAYS_SHORT = ['пн','вт','ср','чт','пт','сб','вс'];
+  const MOOD_COLORS = ['#A85B54','#C08457','#C4AE68','#8FA97B','#5C8A6B'];
+  const MOOD_NAMES  = ['Тяжело','Спад','Ровно','Хорошо','Ресурс'];
+
+  /* ═══ Мотивация ═══ */
+  const AFFIRMATIONS = [
+    'Ты умеешь держать пространство для других. Не забудь оставить немного и для себя.',
+    'Твоя работа меняет людей тихо и глубоко. Это важнее, чем кажется со стороны.',
+    'Сегодня достаточно сделать одно честное дело. Одно — уже движение.',
+    'Ты не обязана быть идеальной. Ты обязана быть настоящей — с собой в том числе.',
+    'Тот, кто умеет слушать других, заслуживает, чтобы выслушали и его.',
+    'Усталость — не слабость. Это сигнал, что ты вкладываешься по-настоящему.',
+    'Твои границы — это не стены. Это дверь, которую ты открываешь, когда готова.',
+    'Каждая консультация — маленький акт веры в человека.',
+    'Ты — не только психолог и преподаватель. Ты ещё и человек. Помни об этом.',
+    'Забота о себе — не награда за продуктивность. Это её условие.',
+    'Ты уже помогла многим. Включая ту, которой была год назад.'
+  ];
+
+  const PRAISE_AFTER_SESSION = [
+    'Встреча сохранена ✨ Ты помогаешь этому человеку.',
+    'Записано. Ты несёшь свет в чью-то жизнь.',
+    'Сессия в архиве. Твоя работа меняет людей.',
+    'Сохранено. Ты — опора для многих. Спасибо, что ты есть.',
+    'Встреча зафиксирована. Каждый твой разговор — шаг к исцелению.'
+  ];
+  const PRAISE_AFTER_CLIENT = [
+    'Новый клиент в твоей заботе ✨ Ты несёшь свет.',
+    'Ещё один человек рядом с тобой. Ты справишься.',
+    'Добро пожаловать в историю. Ты делаешь большое дело.'
+  ];
+  const PRAISE_AFTER_EVENT = [
+    'Сделано ✓ Ты молодец!',
+    'Ты справляешься, даже когда дел много.',
+    'Ещё один шаг вперёд ✓',
+    'Красиво закрыто. Так держать.'
+  ];
+  const POPUP_PHRASES = [
+    { icon:'✨', text:'Ты молодец, Елена. Ты несёшь свет людям.' },
+    { icon:'💛', text:'Твоя работа важна. Каждый разговор — это чья-то надежда.' },
+    { icon:'🌿', text:'Ты помогаешь другим быть лучше. Не забывай и о себе.' },
+    { icon:'💫', text:'Ты — опора для многих. Позаботься и о своей опоре.' },
+    { icon:'🕊', text:'Ты делаешь мир мягче. Это большая сила.' },
+    { icon:'🌸', text:'Спасибо, что ты есть. Ты важнее, чем все твои дела.' },
+    { icon:'☀️', text:'Твоя чуткость — редкий дар. Береги её.' },
+    { icon:'🌱', text:'Ты помогаешь людям расти. Позволь расти и себе.' }
+  ];
+  const MILESTONES = {
+    streak7:   '🎉 7 дней заботы о себе! Это уже привычка. Ты молодец.',
+    streak14:  '🎉 14 дней! Ты держишь ритм лучше многих. Гордись собой.',
+    streak30:  '🎉 30 дней! Это про устойчивость и любовь к себе. Ты невероятна.',
+    sess5:     '🎉 5 встреч! Ты даёшь людям опору. Спасибо тебе.',
+    sess10:    '🎉 10 встреч! Твоя работа — это свет в чьих-то буднях.',
+    sess25:    '🎉 25 встреч! Ты меняешь жизни тихо и глубоко.',
+    clients5:  '🎉 5 клиентов! Ты становишься опорой для многих.',
+    clients10: '🎉 10 клиентов! Твоё пространство растёт. Ты молодец.'
+  };
+
+  const QUOTES = [
+    { t:'Пока вы не сделаете бессознательное сознательным, оно будет управлять вашей жизнью, а вы будете называть это судьбой.', a:'Карл Густав Юнг' },
+    { t:'Любопытный парадокс: когда я принимаю себя таким, какой я есть, я начинаю меняться.', a:'Карл Роджерс' },
+    { t:'Между стимулом и реакцией есть пространство. В этом пространстве — наша свобода выбора.', a:'Виктор Франкл' },
+    { t:'Если вы намеренно собираетесь стать меньше, чем вы способны быть, я предупреждаю: вы будете глубоко несчастны.', a:'Абрахам Маслоу' },
+    { t:'Учиться и не размышлять — напрасный труд; размышлять и не учиться — опасно.', a:'Конфуций' },
+    { t:'Чтобы быть хорошим преподавателем, нужно любить то, что преподаёшь, и любить тех, кому преподаёшь.', a:'Василий Ключевский' },
+    { t:'Я делаю своё дело, а ты делаешь своё. Я живу в этом мире не для того, чтобы соответствовать твоим ожиданиям.', a:'Фриц Перлз' },
+    { t:'Воспитание есть воздействие на сердце тех, кого мы воспитываем.', a:'Лев Толстой' },
+    { t:'Ребёнок становится самим собой лишь в присутствии того, кто способен быть надёжной опорой.', a:'Дональд Винникотт' },
+    { t:'Забота о себе — не эгоизм, а условие профессиональной устойчивости.', a:'Елена Осинцева' }
+  ];
+
+  /* ═══════ Состояние ═══════ */
+  let state = { events:{}, days:{}, clients:[], sessions:{} };
+  let meta  = {
+    bestStreak:0, lastVisit:null, theme:'lavender', mode:'light',
+    cloud: { enabled:false, provider:null, lastSync:null },
+    achievements: { sess5:false, sess10:false, sess25:false, clients5:false, clients10:false, streak7:false, streak14:false, streak30:false }
+  };
+  let view = new Date(); view.setDate(1);
+  let selectedDate = null;
+  let activeClientId = null;
+  let sessionDraft = null;
+  let editingClientId = null;
+
+  let recorder = { mediaRecorder:null, stream:null, chunks:[], blob:null, startedAt:0, timer:null, audioUrl:null };
+  let recognition = null, recognizing = false, finalTranscript = '';
+
+  /* ═══════ Утилиты ═══════ */
+  const $ = s => document.querySelector(s);
+  const pad = n => String(n).padStart(2,'0');
+  const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const parseFmt = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const dayPick = (arr, salt) => arr[(dayOfYear() + (salt||0)) % arr.length];
+  function dayOfYear(){ const n = new Date(); const s = new Date(n.getFullYear(),0,0); return Math.floor((n-s)/86400000); }
+  function plural(n, one, few, many){ const a = n%10, b = n%100;
+    if (a===1 && b!==11) return one; if (a>=2 && a<=4 && (b<10 || b>=20)) return few; return many; }
+  function fmtTime(sec){ const m = Math.floor(sec/60), s = Math.floor(sec%60); return pad(m)+':'+pad(s); }
+  function initials(name){ return (name||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase() || '?'; }
+  function colorFor(name){ let h = 0; for (let i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i))>>>0; return AVATAR_COLORS[h % AVATAR_COLORS.length]; }
+
+  /* ═══════ localStorage ═══════ */
+  function loadLocal(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if (raw){ const d = JSON.parse(raw);
+        state.events = d.events||{}; state.days = d.days||{};
+        state.clients = d.clients||[]; state.sessions = d.sessions||{};
+      }
+      const rm = localStorage.getItem(KEY_META);
+      if (rm){ const m = JSON.parse(rm); meta = Object.assign(meta, m);
+        meta.cloud = Object.assign({enabled:false,provider:null,lastSync:null}, m.cloud||{});
+        meta.achievements = Object.assign({sess5:false,sess10:false,sess25:false,clients5:false,clients10:false,streak7:false,streak14:false,streak30:false}, m.achievements||{});
+      }
+    }catch(e){ console.warn(e); }
+  }
+  function saveLocal(silent){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(state));
+      localStorage.setItem(KEY_META, JSON.stringify(meta));
+      if (!silent) toast('Сохранено');
+    }catch(e){ toast('Не удалось сохранить'); }
+  }
+
+  /* ═══════ IndexedDB ═══════ */
+  function openDB(){ return new Promise((res,rej) => {
+    const r = indexedDB.open(DB_NAME, 1);
+    r.onupgradeneeded = e => { const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }); }
+  async function dbPut(k,b){ const db = await openDB();
+    return new Promise((res,rej) => { const tx = db.transaction(STORE,'readwrite');
+      tx.objectStore(STORE).put(b,k); tx.oncomplete=res; tx.onerror=()=>rej(tx.error); }); }
+  async function dbGet(k){ const db = await openDB();
+    return new Promise((res,rej) => { const tx = db.transaction(STORE,'readonly');
+      const r = tx.objectStore(STORE).get(k); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+  async function dbDel(k){ const db = await openDB();
+    return new Promise((res,rej) => { const tx = db.transaction(STORE,'readwrite');
+      tx.objectStore(STORE).delete(k); tx.oncomplete=res; tx.onerror=()=>rej(tx.error); }); }
+
+  /* ═══════ Toast / Попапы / Конфетти ═══════ */
+  let toastTimer = null;
+  function toast(msg, celebrate){
+    const el = $('#toast');
+    el.textContent = msg;
+    el.classList.toggle('celebrate', !!celebrate);
+    el.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('on'), celebrate ? 3200 : 2200);
+  }
+
+  let mpTimer = null;
+  function popup(text, icon){
+    const p = $('#mpopup');
+    $('#mpIcon').textContent = icon || '✨';
+    $('#mpText').textContent = text;
+    p.classList.add('on');
+    clearTimeout(mpTimer);
+    mpTimer = setTimeout(() => p.classList.remove('on'), 5500);
+  }
+  function maybePopupMotivation(){
+    if (Math.random() < 0.55){
+      const p = pick(POPUP_PHRASES);
+      setTimeout(() => popup(p.text, p.icon), 800);
+    }
+  }
+
+  function celebrate(){
+    const colors = ['#C0714F','#2F5D5A','#C99A3E','#B7A8CE','#D8A5A5','#9DBCC9'];
+    for (let i = 0; i < 36; i++){
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.background = colors[i % colors.length];
+      c.style.animationDuration = (1.8 + Math.random()*1.4) + 's';
+      c.style.animationDelay = (Math.random()*0.3) + 's';
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      if (Math.random() > 0.5) c.style.borderRadius = '50%';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }
+  }
+
+  /* ═══════ Мотивационные проверки ═══════ */
+  function checkMilestones(){
+    const sessCount = Object.keys(state.sessions).length;
+    const clientCount = state.clients.length;
+    const streak = calcStreak();
+
+    if (!meta.achievements.sess5 && sessCount >= 5){ meta.achievements.sess5 = true; celebrate(); toast(MILESTONES.sess5, true); }
+    else if (!meta.achievements.sess10 && sessCount >= 10){ meta.achievements.sess10 = true; celebrate(); toast(MILESTONES.sess10, true); }
+    else if (!meta.achievements.sess25 && sessCount >= 25){ meta.achievements.sess25 = true; celebrate(); toast(MILESTONES.sess25, true); }
+    else if (!meta.achievements.clients5 && clientCount >= 5){ meta.achievements.clients5 = true; celebrate(); toast(MILESTONES.clients5, true); }
+    else if (!meta.achievements.clients10 && clientCount >= 10){ meta.achievements.clients10 = true; celebrate(); toast(MILESTONES.clients10, true); }
+    else if (!meta.achievements.streak7 && streak >= 7){ meta.achievements.streak7 = true; celebrate(); toast(MILESTONES.streak7, true); }
+    else if (!meta.achievements.streak14 && streak >= 14){ meta.achievements.streak14 = true; celebrate(); toast(MILESTONES.streak14, true); }
+    else if (!meta.achievements.streak30 && streak >= 30){ meta.achievements.streak30 = true; celebrate(); toast(MILESTONES.streak30, true); }
+
+    saveLocal(true);
+  }
+
+  /* ═══════ Тема и режим ═══════ */
+  function applyTheme(){
+    document.body.dataset.theme = meta.theme;
+    document.body.classList.toggle('dark', meta.mode === 'dark');
+    $('#themeBtn').textContent = meta.mode === 'dark' ? '🌙' : '🎨';
+    document.querySelector('meta[name="theme-color"]').content = meta.mode === 'dark' ? '#141418' : '#F8F5F0';
+    saveLocal(true);
+  }
+  function buildThemePanel(){
+    const grid = $('#themeGrid');
+    grid.innerHTML = THEMES.map(t => `
+      <button class="theme-opt${meta.theme === t.key ? ' on' : ''}" data-key="${t.key}">
+        <span class="theme-swatch" style="background:linear-gradient(135deg, ${t.bg1}, ${t.bg2} 50%, ${t.bg3})"></span>
+        <span class="theme-name">${t.name}</span>
+      </button>
+    `).join('');
+    grid.querySelectorAll('.theme-opt').forEach(b => {
+      b.addEventListener('click', () => { meta.theme = b.dataset.key; applyTheme(); buildThemePanel(); toast('Тема: ' + THEMES.find(x=>x.key===b.dataset.key).name); });
+    });
+    $('#modeLight').classList.toggle('active', meta.mode === 'light');
+    $('#modeDark').classList.toggle('active', meta.mode === 'dark');
+  }
+  function openThemePanel(){
+    const panel = $('#themePanel'), btn = $('#themeBtn');
+    const r = btn.getBoundingClientRect();
+    panel.style.top = (r.bottom + 8) + 'px';
+    panel.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
+    panel.classList.add('on');
+    buildThemePanel();
+  }
+  function closeThemePanel(){ $('#themePanel').classList.remove('on'); }
+
+  /* ═══════ Клиенты ═══════ */
+  function getClient(id){ return state.clients.find(c => c.id === id); }
+  function sessionsForClient(id){
+    return Object.values(state.sessions).filter(s => s.clientId === id)
+      .sort((a,b) => (b.date + (b.time||'')).localeCompare(a.date + (a.time||'')));
+  }
+  function sessionsForDate(date){
+    return Object.values(state.sessions).filter(s => s.date === date)
+      .sort((a,b) => (a.time||'').localeCompare(b.time||''));
+  }
+
+  function renderClientCount(){ $('#clientCount').textContent = state.clients.length; }
+
+  function renderClients(){
+    renderClientCount();
+    const grid = $('#clientsGrid');
+    if (!state.clients.length){
+      grid.innerHTML = `
+        <div class="clients-empty">
+          <h3>Пока нет клиентов</h3>
+          <p>Добавьте первого клиента, чтобы вести историю встреч,<br>записывать голосовые заметки и держать всё в одном месте.</p>
+          <button class="primary-btn" id="emptyAddClient">+ Добавить клиента</button>
+        </div>`;
+      $('#emptyAddClient').addEventListener('click', () => openClientForm());
+      return;
+    }
+    grid.innerHTML = state.clients.map(c => {
+      const sessions = sessionsForClient(c.id);
+      const count = sessions.length, last = sessions[0];
+      const color = colorFor(c.name);
+      const metaLine = [c.age ? esc(c.age)+' лет' : '', count ? `${count} ${plural(count,'встреча','встречи','встреч')}` : 'нет встреч'].filter(Boolean).join(' · ');
+      return `<div class="client-card" data-id="${c.id}" style="--client-color:${color}">
+        <div class="client-avatar" style="background:${color}">${esc(initials(c.name))}</div>
+        <div class="client-info">
+          <div class="client-name">${esc(c.name)}</div>
+          <div class="client-meta">${metaLine}</div>
+          ${last ? `<div class="client-meta" style="margin-top:4px"><span class="badge">${esc(MONTHS_GEN[parseFmt(last.date).getMonth()])} ${parseFmt(last.date).getDate()}</span></div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    grid.querySelectorAll('.client-card').forEach(card => {
+      card.addEventListener('click', () => openClientDetail(card.dataset.id));
+    });
+  }
+
+  function openClientForm(clientId){
+    editingClientId = clientId || null;
+    const c = clientId ? getClient(clientId) : null;
+    $('#cfTitle').textContent = c ? 'Редактировать клиента' : 'Новый клиент';
+    $('#cfName').value = c ? c.name : '';
+    $('#cfAge').value = c ? (c.age || '') : '';
+    $('#cfContact').value = c ? (c.contact || '') : '';
+    $('#cfNote').value = c ? (c.note || '') : '';
+    showOverlay('clientFormOverlay');
+    setTimeout(() => $('#cfName').focus(), 80);
+  }
+  function submitClientForm(e){
+    e.preventDefault();
+    const name = $('#cfName').value.trim();
+    if (!name){ toast('Введите имя'); return; }
+    const data = { name, age: $('#cfAge').value.trim(), contact: $('#cfContact').value.trim(), note: $('#cfNote').value.trim() };
+    if (editingClientId){
+      const c = getClient(editingClientId); if (c) Object.assign(c, data);
+      toast('Клиент обновлён');
+    } else {
+      state.clients.push(Object.assign({ id: uid(), createdAt: Date.now() }, data));
+      popup(pick(PRAISE_AFTER_CLIENT), '✨');
+    }
+    saveLocal(true); hideOverlay('clientFormOverlay'); renderClients(); checkMilestones();
+  }
+
+  function openClientDetail(clientId){
+    activeClientId = clientId;
+    renderClientDetail();
+    showOverlay('clientOverlay');
+  }
+
+  function renderClientDetail(){
+    const c = getClient(activeClientId); if (!c) return;
+    $('#clientTitle').textContent = c.name;
+    const sessions = sessionsForClient(c.id);
+    const color = colorFor(c.name);
+    const totalSec = sessions.reduce((s,x) => s + (x.duration||0), 0);
+
+    $('#clientBody').innerHTML = `
+      <div class="client-header">
+        <div class="client-avatar" style="background:${color}">${esc(initials(c.name))}</div>
+        <div class="client-header-info">
+          <p>${[c.age ? esc(c.age)+' лет' : '', c.contact ? esc(c.contact) : ''].filter(Boolean).join(' · ') || 'без дополнительных данных'}</p>
+          <p style="margin-top:4px">${sessions.length} ${plural(sessions.length,'встреча','встречи','встреч')}${totalSec ? ' · '+fmtTime(totalSec)+' аудио' : ''}</p>
+        </div>
+      </div>
+      <div class="client-actions">
+        <button class="primary" id="cdNewSession">🎙 Новая встреча</button>
+        <button id="cdEdit">✎ Редактировать</button>
+        <button id="cdDelete" class="ghost-btn danger-btn" style="margin-left:auto">Удалить</button>
+      </div>
+      <div class="block">
+        <div class="block-label">Общая заметка</div>
+        <textarea class="note-area" id="cdNote" placeholder="Ключевое о клиенте…">${esc(c.note || '')}</textarea>
+      </div>
+      <div class="block">
+        <div class="block-label">История встреч <span>${sessions.length}</span></div>
+        ${sessions.length ? renderSessionsHtml(sessions, c) : '<p class="empty">Встреч пока не было</p>'}
+      </div>`;
+
+    $('#cdNewSession').addEventListener('click', () => openSessionModal({ clientId: c.id, date: fmt(new Date()) }));
+    $('#cdEdit').addEventListener('click', () => { hideOverlay('clientOverlay'); openClientForm(c.id); });
+    $('#cdDelete').addEventListener('click', () => deleteClient(c.id));
+
+    const note = $('#cdNote');
+    let t = null;
+    note.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { c.note = note.value; saveLocal(true); renderClients(); }, 400); });
+    bindSessionActions();
+  }
+
+  function deleteClient(id){
+    const c = getClient(id); if (!c) return;
+    const sess = sessionsForClient(id);
+    if (!confirm(`Удалить клиента «${c.name}» и все его встречи (${sess.length})?`)) return;
+    sess.forEach(s => { if (s.audioId) dbDel(s.audioId).catch(()=>{}); delete state.sessions[s.id]; });
+    state.clients = state.clients.filter(x => x.id !== id);
+    saveLocal(true); hideOverlay('clientOverlay'); renderClients(); renderGrid();
+    toast('Клиент удалён');
+  }
+
+  function renderSessionsHtml(sessions, client){
+    const color = client ? colorFor(client.name) : 'var(--plum)';
+    return '<ul class="sess-list">' + sessions.map(s => {
+      const d = parseFmt(s.date);
+      const c = client || getClient(s.clientId);
+      const dur = s.duration ? fmtTime(s.duration) : '';
+      const hasTranscript = s.transcript && s.transcript.trim();
+      return `<li class="sess" data-sid="${s.id}">
+        <div class="sess-head">
+          <div class="sess-avatar" style="background:${color}">${esc(initials(c ? c.name : '?'))}</div>
+          <div class="sess-body">
+            <div class="sess-client">${esc(c ? c.name : 'Клиент удалён')}</div>
+            <div class="sess-topic">${esc(s.topic || 'без темы')}</div>
+            <div class="sess-meta">
+              <span>${d.getDate()} ${MONTHS_GEN[d.getMonth()]} ${d.getFullYear()}</span>
+              ${s.time ? '<span class="dot"></span><span>'+esc(s.time)+'</span>' : ''}
+              ${dur ? '<span class="dot"></span><span>'+dur+'</span>' : ''}
+              ${hasTranscript ? '<span class="dot"></span><span>📝 расшифровка</span>' : ''}
+            </div>
+          </div>
+        </div>
+        <div class="sess-actions">
+          ${s.audioId ? '<button class="play" data-act="play">▶ Прослушать</button><button data-act="download">⬇ Скачать</button>' : '<span style="font-size:10.5px;color:var(--muted);padding:5px 0">Без аудио</span>'}
+          <button data-act="edit">✎</button>
+          <button data-act="del" class="del">🗑</button>
+        </div>
+        ${hasTranscript ? '<div class="sess-transcript">'+esc(s.transcript)+'</div>' : ''}
+      </li>`;
+    }).join('') + '</ul>';
+  }
+
+  function bindSessionActions(){
+    document.querySelectorAll('.sess').forEach(li => {
+      const sid = li.dataset.sid;
+      li.querySelectorAll('[data-act]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const s = state.sessions[sid]; if (!s) return;
+          const act = btn.dataset.act;
+          if (act === 'play') playSession(li, s);
+          else if (act === 'download') downloadSession(s);
+          else if (act === 'edit'){ hideOverlay('clientOverlay'); hideOverlay('dayOverlay'); openSessionModal({ sessionId: sid }); }
+          else if (act === 'del') deleteSession(sid);
+        });
+      });
+    });
+  }
+
+  async function playSession(li, s){
+    const ex = li.querySelector('audio');
+    if (ex){ URL.revokeObjectURL(ex.src); ex.remove(); return; }
+    try{
+      const blob = await dbGet(s.audioId);
+      if (!blob){ toast('Аудио не найдено'); return; }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('audio');
+      a.controls = true; a.src = url;
+      a.addEventListener('ended', () => { URL.revokeObjectURL(url); a.remove(); });
+      li.appendChild(a); a.play().catch(()=>{});
+    }catch(e){ toast('Не удалось воспроизвести'); }
+  }
+
+  async function downloadSession(s){
+    try{
+      const blob = await dbGet(s.audioId);
+      if (!blob){ toast('Аудио не найдено'); return; }
+      const ext = blob.type.includes('mp4') ? 'm4a' : 'webm';
+      const c = getClient(s.clientId);
+      const name = `${s.date}_${(c ? c.name : 'встреча').replace(/\s+/g,'_')}_${(s.topic||'').replace(/\s+/g,'_').slice(0,40)}.${ext}`;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      toast('Файл скачан на телефон');
+    }catch(e){ toast('Не удалось скачать'); }
+  }
+
+  function deleteSession(sid){
+    const s = state.sessions[sid]; if (!s) return;
+    if (!confirm('Удалить встречу' + (s.audioId ? ' и аудиозапись' : '') + '?')) return;
+    if (s.audioId) dbDel(s.audioId).catch(()=>{});
+    delete state.sessions[sid];
+    saveLocal(true);
+    if (activeClientId && $('#clientOverlay').classList.contains('on')) renderClientDetail();
+    if (selectedDate && $('#dayOverlay').classList.contains('on')) renderDayModal();
+    renderGrid(); renderClients(); toast('Удалено');
+  }
+
+  /* ═══════ Модалка сессии ═══════ */
+  function openSessionModal(opts){
+    opts = opts || {};
+    if (!state.clients.length){ toast('Сначала добавьте клиента'); openClientForm(); return; }
+    if (opts.sessionId){
+      const s = state.sessions[opts.sessionId]; if (!s) return;
+      sessionDraft = { id:s.id, clientId:s.clientId, date:s.date, topic:s.topic||'', notes:s.notes||'',
+                       transcript:s.transcript||'', audioId:s.audioId||null, duration:s.duration||0,
+                       newBlob:null, removeOldAudio:false };
+      $('#sTitle').textContent = 'Редактировать встречу';
+    } else {
+      sessionDraft = { id:null, clientId:opts.clientId || state.clients[0].id, date:opts.date || fmt(new Date()),
+                       topic:'', notes:'', transcript:'', audioId:null, duration:0, newBlob:null, removeOldAudio:false };
+      $('#sTitle').textContent = 'Новая встреча';
+    }
+    const sel = $('#sClient');
+    sel.innerHTML = state.clients.map(c => `<option value="${c.id}"${c.id===sessionDraft.clientId?' selected':''}>${esc(c.name)}</option>`).join('');
+    $('#sDate').value = sessionDraft.date;
+    $('#sTopic').value = sessionDraft.topic;
+    $('#sNotes').value = sessionDraft.notes;
+    resetRecorderUI();
+    $('#transcriptText').textContent = sessionDraft.transcript || '';
+    if (sessionDraft.audioId) loadExistingAudio(sessionDraft.audioId);
+    initSpeechRecognition();
+    showOverlay('sessionOverlay');
+    setTimeout(() => $('#sTopic').focus(), 100);
+  }
+
+  async function loadExistingAudio(audioId){
+    try{
+      const blob = await dbGet(audioId);
+      if (!blob) return;
+      recorder.blob = blob;
+      showRecorderPlayer(blob);
+    }catch(e){ console.warn(e); }
+  }
+  function resetRecorderUI(){
+    recorder.blob = null;
+    $('#recorder').classList.remove('recording');
+    $('#recTime').textContent = '00:00';
+    $('#recHint').textContent = 'Нажмите кнопку, чтобы начать запись';
+    $('#recPlayer').style.display = 'none';
+    const a = $('#recAudio'); if (a.src) URL.revokeObjectURL(a.src); a.removeAttribute('src');
+    $('#transcriptStatus').innerHTML = '';
+    finalTranscript = '';
+  }
+  function showRecorderPlayer(blob){
+    const a = $('#recAudio');
+    if (a.src) URL.revokeObjectURL(a.src);
+    a.src = URL.createObjectURL(blob);
+    $('#recPlayer').style.display = 'block';
+  }
+
+  /* ═══════ Транскрипция (Web Speech API) ═══════ */
+  function initSpeechRecognition(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const box = $('#transcriptBox');
+    const statusEl = $('#transcriptStatus');
+    if (!SR){
+      statusEl.innerHTML = '<span style="color:var(--muted)">недоступно</span>';
+      $('#transcriptText').outerHTML = '<div class="transcript-unsupported">Распознавание речи недоступно в этом браузере. Работает в Chrome, Edge, Safari 16+. В Firefox — нет. Аудиозапись при этом работает.</div>';
+      return;
+    }
+    recognition = new SR();
+    recognition.lang = 'ru-RU';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = e => {
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++){
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finalTranscript += t + ' ';
+        else interim += t;
+      }
+      $('#transcriptText').textContent = (finalTranscript + interim).trim();
+    };
+    recognition.onerror = e => {
+      if (e.error === 'no-speech') return;
+      if (e.error === 'not-allowed'){ toast('Разрешите доступ к микрофону для распознавания'); }
+    };
+    recognition.onend = () => {
+      if (recognizing) { try { recognition.start(); } catch(e){} }
+      else {
+        statusEl.innerHTML = finalTranscript ? '<span style="color:var(--sage)">готово</span>' : '';
+        if (finalTranscript.trim()) sessionDraft.transcript = finalTranscript.trim();
+      }
+    };
+  }
+
+  function startSpeechRecognition(){
+    if (!recognition) return;
+    finalTranscript = '';
+    recognizing = true;
+    $('#transcriptStatus').innerHTML = '<span class="live">слушаю</span>';
+    try { recognition.start(); } catch(e){}
+  }
+  function stopSpeechRecognition(){
+    if (!recognition) return;
+    recognizing = false;
+    try { recognition.stop(); } catch(e){}
+  }
+
+  /* ═══════ Диктофон ═══════ */
+  async function startRecording(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      toast('Микрофон недоступен. Нужен HTTPS.'); return;
+    }
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus'
+                 : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
+                 : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+      recorder.mediaRecorder = new MediaRecorder(stream, mime ? { mimeType:mime } : undefined);
+      recorder.stream = stream;
+      recorder.chunks = [];
+      recorder.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recorder.chunks.push(e.data); };
+      recorder.mediaRecorder.onstop = () => {
+        const type = recorder.mediaRecorder.mimeType || 'audio/webm';
+        recorder.blob = new Blob(recorder.chunks, { type });
+        showRecorderPlayer(recorder.blob);
+        $('#recHint').textContent = 'Запись готова. Прослушайте или сохраните';
+      };
+      recorder.mediaRecorder.start();
+      recorder.startedAt = Date.now();
+      $('#recorder').classList.add('recording');
+      $('#recBtn').querySelector('.icon').textContent = '';
+      $('#recHint').textContent = 'Идёт запись… Нажмите, чтобы остановить';
+      recorder.timer = setInterval(() => {
+        const el = (Date.now() - recorder.startedAt) / 1000;
+        $('#recTime').textContent = fmtTime(el);
+      }, 100);
+      /* параллельно запускаем распознавание */
+      startSpeechRecognition();
+    }catch(err){
+      if (err.name === 'NotAllowedError') toast('Доступ к микрофону запрещён');
+      else if (err.name === 'NotFoundError') toast('Микрофон не найден');
+      else toast('Не удалось начать запись');
+    }
+  }
+
+  function stopRecording(){
+    if (!recorder.mediaRecorder) return;
+    try { recorder.mediaRecorder.stop(); }catch(e){}
+    if (recorder.stream) recorder.stream.getTracks().forEach(t => t.stop());
+    clearInterval(recorder.timer);
+    sessionDraft.duration = (Date.now() - recorder.startedAt) / 1000;
+    $('#recTime').textContent = fmtTime(sessionDraft.duration);
+    $('#recorder').classList.remove('recording');
+    $('#recBtn').querySelector('.icon').textContent = '⏺';
+    recorder.mediaRecorder = null;
+    recorder.stream = null;
+    stopSpeechRecognition();
+  }
+
+  async function saveSession(){
+    const clientId = $('#sClient').value;
+    const date = $('#sDate').value;
+    const topic = $('#sTopic').value.trim();
+    const notes = $('#sNotes').value.trim();
+    const transcript = ($('#transcriptText').textContent || '').trim() || sessionDraft.transcript || '';
+
+    if (!clientId){ toast('Выберите клиента'); return; }
+    if (!date){ toast('Укажите дату'); return; }
+    if (!topic){ toast('Укажите тему'); $('#sTopic').focus(); return; }
+    if (recorder.mediaRecorder) stopRecording();
+
+    let audioId = sessionDraft.audioId;
+    if (sessionDraft.removeOldAudio && audioId){
+      await dbDel(audioId).catch(()=>{}); audioId = null;
+    }
+    if (recorder.blob){
+      const newId = 'aud_' + uid();
+      await dbPut(newId, recorder.blob);
+      if (audioId && audioId !== newId) await dbDel(audioId).catch(()=>{});
+      audioId = newId;
+    }
+    const payload = {
+      id: sessionDraft.id || uid(),
+      clientId, date, topic, notes, transcript,
+      audioId: audioId || null,
+      duration: sessionDraft.duration || 0,
+      createdAt: sessionDraft.id ? (state.sessions[sessionDraft.id]?.createdAt || Date.now()) : Date.now()
+    };
+    state.sessions[payload.id] = payload;
+    saveLocal(true);
+    hideOverlay('sessionOverlay');
+    toast(sessionDraft.id ? 'Встреча обновлена' : 'Сохранено ✓');
+    if (!sessionDraft.id) popup(pick(PRAISE_AFTER_SESSION), '💛');
+    renderGrid(); renderClients(); checkMilestones();
+    if (activeClientId && $('#clientOverlay').classList.contains('on')) renderClientDetail();
+    if (selectedDate && $('#dayOverlay').classList.contains('on')) renderDayModal();
+    maybePopupMotivation();
+  }
+
+  /* ═══════ Сетка календаря ═══════ */
+  function renderGrid(){
+    const y = view.getFullYear(), m = view.getMonth();
+    $('#monthLabel').textContent = MONTHS[m];
+    $('#yearLabel').textContent = y;
+
+    const first = new Date(y, m, 1);
+    const offset = (first.getDay() + 6) % 7;
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const prevMonthDays = new Date(y, m, 0).getDate();
+    const rows = Math.ceil((offset + daysInMonth) / 7);
+    const total = rows * 7;
+    const todayStr = fmt(new Date());
+
+    const grid = $('#grid');
+    grid.innerHTML = '';
+
+    for (let i = 0; i < total; i++){
+      const dayNum = i - offset + 1;
+      let date, out = false;
+      if (dayNum < 1){ date = new Date(y, m-1, prevMonthDays + dayNum); out = true; }
+      else if (dayNum > daysInMonth){ date = new Date(y, m+1, dayNum - daysInMonth); out = true; }
+      else { date = new Date(y, m, dayNum); }
+      const key = fmt(date);
+      const cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'cell' + (out ? ' out' : '') + (key === todayStr ? ' today' : '') + (key === selectedDate ? ' sel' : '');
+      cell.dataset.date = key;
+
+      const num = document.createElement('span');
+      num.className = 'num'; num.textContent = date.getDate();
+      cell.appendChild(num);
+
+      const evs = (state.events[key] || []).slice().sort((a,b) => (a.time||'').localeCompare(b.time||''));
+      const sss = sessionsForDate(key);
+      const minis = document.createElement('div'); minis.className = 'minis';
+      let shown = 0;
+
+      sss.slice(0, 2).forEach(s => {
+        const c = getClient(s.clientId);
+        const btn = document.createElement('button');
+        btn.className = 'mini';
+        btn.innerHTML = `<i style="background:${c ? colorFor(c.name) : 'var(--plum)'}"></i><span>🎙 ${esc(c ? c.name : 'Клиент')}</span>`;
+        btn.addEventListener('click', e => { e.stopPropagation(); openSessionModal({ sessionId: s.id }); });
+        minis.appendChild(btn); shown++;
+      });
+      evs.slice(0, Math.max(0, 2 - shown)).forEach(ev => {
+        const t = TYPES[ev.type] || TYPES.personal;
+        const row = document.createElement('div'); row.className = 'mini';
+        row.innerHTML = `<i style="background:${t.color}"></i><span>${esc(ev.title)}</span>`;
+        minis.appendChild(row); shown++;
+      });
+      if (sss.length + evs.length > shown){
+        const more = document.createElement('div'); more.className = 'more';
+        more.textContent = '+' + (sss.length + evs.length - shown);
+        minis.appendChild(more);
+      }
+      if (sss.length + evs.length) cell.appendChild(minis);
+
+      const day = state.days[key];
+      if (day && day.mood){
+        const bar = document.createElement('div');
+        bar.className = 'moodbar';
+        bar.style.background = MOOD_COLORS[day.mood - 1];
+        cell.appendChild(bar);
+      }
+
+      cell.addEventListener('click', () => openDay(key));
+      grid.appendChild(cell);
+    }
+  }
+
+  /* ═══════ Ближайшие ═══════ */
+  function renderUpcoming(){
+    const list = $('#upcoming'); list.innerHTML = '';
+    const today = new Date(); today.setHours(0,0,0,0);
+    const items = [];
+    for (let i = 0; i < 21; i++){
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      const key = fmt(d);
+      (state.events[key] || []).forEach(ev => { if (ev.done) return; items.push({ date:d, kind:'event', key, obj:ev }); });
+      sessionsForDate(key).forEach(s => { items.push({ date:d, kind:'session', key, obj:s }); });
+      if (items.length >= 10) break;
+    }
+    items.sort((a,b) => { const c = a.date - b.date; if (c) return c;
+      return ((a.obj.time||'99:99')).localeCompare(b.obj.time||'99:99'); });
+    if (!items.length){ list.innerHTML = '<li class="empty">Пока ничего не запланировано</li>'; return; }
+    items.slice(0,6).forEach(({date, kind, key, obj}) => {
+      const li = document.createElement('li');
+      let title, sub;
+      if (kind === 'session'){ const c = getClient(obj.clientId); title = '🎙 ' + (c ? c.name : 'Клиент'); sub = obj.topic || 'встреча'; }
+      else { const t = TYPES[obj.type] || TYPES.personal; title = obj.title; sub = `${t.icon} ${t.label}${obj.time ? ' · '+obj.time : ''}`; }
+      li.innerHTML = `<div class="date-chip"><b>${date.getDate()}</b><small>${WEEKDAYS_SHORT[(date.getDay()+6)%7]}</small></div>
+        <div class="info"><div class="t">${esc(title)}</div><div class="s">${esc(sub)}</div></div>`;
+      li.addEventListener('click', () => kind === 'session' ? openSessionModal({ sessionId: obj.id }) : openDay(key));
+      list.appendChild(li);
+    });
+  }
+
+  /* ═══════ Статистика ═══════ */
+  function renderStats(){
+    const y = view.getFullYear(), m = view.getMonth();
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const counts = { consult:0, class:0, personal:0, method:0 };
+    let done = 0, totalEvs = 0, moods = [], sessCount = 0;
+    for (let d = 1; d <= daysInMonth; d++){
+      const key = fmt(new Date(y, m, d));
+      (state.events[key] || []).forEach(ev => {
+        if (counts[ev.type] !== undefined) counts[ev.type]++;
+        totalEvs++; if (ev.done) done++;
+      });
+      sessCount += sessionsForDate(key).length;
+      const day = state.days[key];
+      if (day && day.mood) moods.push(day.mood);
+    }
+    $('#stats').innerHTML = `
+      <div class="stat"><b>${counts.consult}</b><small>консультаций</small></div>
+      <div class="stat"><b>${counts.class}</b><small>занятий</small></div>
+      <div class="stat"><b>${done}/${totalEvs}</b><small>дел закрыто</small></div>
+      <div class="stat"><b>${sessCount}</b><small>встреч с клиентами</small></div>`;
+  }
+
+  /* ═══════ Мотивация ═══════ */
+  function hasContent(key){
+    const d = state.days[key];
+    if (d && (d.mood || d.energy || (d.note && d.note.trim()))) return true;
+    if (state.events[key] && state.events[key].length) return true;
+    if (sessionsForDate(key).length) return true;
+    return false;
+  }
+  function calcStreak(){
+    let streak = 0;
+    let d = new Date(); d.setHours(0,0,0,0);
+    if (!hasContent(fmt(d))) d.setDate(d.getDate() - 1);
+    while (hasContent(fmt(d)) && streak < 999){ streak++; d.setDate(d.getDate() - 1); }
+    return streak;
+  }
+  function renderMotivation(){
+    const h = new Date().getHours();
+    let greet;
+    if (h >= 5 && h < 12)       greet = 'Доброе утро, Елена';
+    else if (h >= 12 && h < 18) greet = 'Добрый день, Елена';
+    else if (h >= 18 && h < 23) greet = 'Добрый вечер, Елена';
+    else                         greet = 'Поздний вечер, Елена';
+    $('#greetText').textContent = greet;
+    $('#affirmText').textContent = dayPick(AFFIRMATIONS, 0);
+
+    const streak = calcStreak();
+    if (streak > meta.bestStreak){ meta.bestStreak = streak; saveLocal(true); }
+    $('#streakNum').innerHTML = streak + ' <small>' + plural(streak, 'день','дня','дней') + '</small>';
+    $('#streakLabel').textContent = streak === 0 ? 'начни сегодня — отметь настроение' : 'заботы о себе';
+    $('#streakBox').classList.toggle('hot', streak >= 3);
+    const best = $('#streakBest');
+    if (meta.bestStreak >= 3 && meta.bestStreak > streak){ best.style.display=''; best.textContent = 'рекорд '+meta.bestStreak; }
+    else best.style.display = 'none';
+
+    $('#nudgeText').innerHTML = buildNudge(streak);
+    checkMilestones();
+  }
+  function buildNudge(streak){
+    const todayKey = fmt(new Date());
+    const todayEvs = (state.events[todayKey] || []).filter(e => !e.done);
+    const todaySess = sessionsForDate(todayKey);
+    const h = new Date().getHours();
+    if (!todaySess.length && !todayEvs.length && !(state.days[todayKey] && state.days[todayKey].mood))
+      return '<b>Свободный день.</b> Чем наполнишь его: тишиной или движением?';
+    if (todaySess.length + todayEvs.length >= 4)
+      return 'Плотный день. Между встречами — 3 глубоких вдоха. Это не роскошь, это техника.';
+    if (streak >= 5) return `Ты заботишься о себе <b>${streak} дней подряд</b>. Это уже привычка.`;
+    if (h >= 20 && !(state.days[todayKey] && state.days[todayKey].note))
+      return 'Вечер. Если ещё не записала — две строки для себя. Что сегодня было важным?';
+    if (h >= 5 && h < 11) return 'Утро. Прежде чем открыть почту и планы — минута на себя.';
+    return 'Ты справляешься. Даже если сегодня это не чувствуется — ты справляешься.';
+  }
+
+  /* ═══════ Модалка дня ═══════ */
+  function openDay(key){ selectedDate = key; renderGrid(); renderDayModal(); showOverlay('dayOverlay'); }
+
+  function renderDayModal(){
+    if (!selectedDate) return;
+    const d = parseFmt(selectedDate);
+    const day = state.days[selectedDate] || {};
+    const evs = (state.events[selectedDate] || []).slice().sort((a,b) => (a.time||'').localeCompare(b.time||''));
+    const sss = sessionsForDate(selectedDate);
+
+    $('#mWeekday').textContent = WEEKDAYS[(d.getDay()+6)%7];
+    $('#mDate').textContent = `${d.getDate()} ${MONTHS_GEN[d.getMonth()]} ${d.getFullYear()}`;
+
+    const pips = (field, value, colorFn) => {
+      let html = '<div class="pips">';
+      for (let i = 1; i <= 5; i++){
+        const on = value === i;
+        const bg = on ? colorFn(i) : '';
+        html += `<button type="button" class="pip${on?' on':''}" data-field="${field}" data-val="${i}" style="${on ? `background:${bg};` : ''}">${i}</button>`;
+      }
+      return html + '</div>';
+    };
+    const moodHint = day.mood ? MOOD_NAMES[day.mood-1] : 'не отмечено';
+
+    const evHtml = evs.length ? '<ul class="ev-list">' + evs.map(ev => {
+      const t = TYPES[ev.type] || TYPES.personal;
+      return `<li class="ev${ev.done?' done':''}" data-id="${ev.id}">
+        <button type="button" class="chk" data-act="toggle"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6.2 4.6 9 10 3.2" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ev-body"><div class="ev-t">${esc(ev.title)}</div><div class="ev-m"><em style="color:${t.color}">${t.icon} ${t.label}</em>${ev.time ? '<span>'+esc(ev.time)+'</span>' : ''}</div></div>
+        <button type="button" class="ev-del" data-act="del">×</button>
+      </li>`;
+    }).join('') + '</ul>' : '<p class="empty" style="padding:2px 0 10px">Дел нет</p>';
+
+    const typeOptions = Object.entries(TYPES).map(([k,v]) => `<option value="${k}">${v.icon} ${v.label}</option>`).join('');
+
+    $('#dayBody').innerHTML = `
+      <div class="block">
+        <div class="state-row">
+          <div><div class="block-label">Настроение</div>${pips('mood', day.mood || 0, i => MOOD_COLORS[i-1])}<div class="hint">${moodHint}</div></div>
+          <div><div class="block-label">Ресурс</div>${pips('energy', day.energy || 0, () => 'var(--teal)')}<div class="hint">${day.energy ? day.energy+' из 5' : 'не отмечено'}</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-label">Встречи с клиентами <span class="action" id="dayNewSession">🎙 Записать встречу</span></div>
+        ${sss.length ? renderSessionsHtml(sss, null) : '<p class="empty" style="padding:2px 0 8px">Нет встреч в этот день</p>'}
+      </div>
+
+      <div class="block">
+        <div class="block-label"><span>Дела дня</span><span>${evs.length}</span></div>
+        ${evHtml}
+        <form class="add-form" id="dayAddForm">
+          <input type="time" id="dayEvTime" aria-label="Время">
+          <input type="text" id="dayEvTitle" placeholder="Что за дело?" maxlength="120" required>
+          <button type="submit" class="add-btn">+</button>
+          <select id="dayEvType">${typeOptions}</select>
+        </form>
+      </div>
+
+      <div class="block" style="margin-bottom:0">
+        <div class="block-label">Заметка дня</div>
+        <textarea class="note-area" id="dayNote" placeholder="Мысли, наблюдения, темы для супервизии…">${esc(day.note || '')}</textarea>
+      </div>`;
+
+    $('#dayBody').querySelectorAll('.pip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.field, v = Number(btn.dataset.val);
+        const dd = state.days[selectedDate] || (state.days[selectedDate] = {});
+        dd[f] = (dd[f] === v) ? null : v;
+        if (!dd.mood && !dd.energy && !dd.note) delete state.days[selectedDate];
+        saveLocal(true); renderDayModal(); renderGrid(); renderMotivation();
+      });
+    });
+
+    $('#dayBody').querySelectorAll('.ev').forEach(li => {
+      const id = li.dataset.id;
+      li.querySelector('[data-act="toggle"]').addEventListener('click', () => {
+        const ev = (state.events[selectedDate]||[]).find(e => e.id === id);
+        if (ev){ ev.done = !ev.done; saveLocal(true); renderDayModal(); renderGrid(); renderUpcoming(); renderStats();
+          if (ev.done){ toast(pick(PRAISE_AFTER_EVENT)); maybePopupMotivation(); } }
+      });
+      li.querySelector('[data-act="del"]').addEventListener('click', () => {
+        state.events[selectedDate] = (state.events[selectedDate]||[]).filter(e => e.id !== id);
+        if (!state.events[selectedDate].length) delete state.events[selectedDate];
+        saveLocal(true); renderDayModal(); renderGrid(); renderUpcoming(); renderStats(); toast('Удалено');
+      });
+    });
+
+    $('#dayAddForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const t = $('#dayEvTitle').value.trim(); if (!t) return;
+      if (!state.events[selectedDate]) state.events[selectedDate] = [];
+      state.events[selectedDate].push({ id:uid(), title:t, time:$('#dayEvTime').value, type:$('#dayEvType').value, done:false });
+      saveLocal(true); renderDayModal(); renderGrid(); renderUpcoming(); renderStats(); toast('Записано ✓');
+    });
+
+    const note = $('#dayNote');
+    let nt = null;
+    note.addEventListener('input', () => {
+      clearTimeout(nt);
+      nt = setTimeout(() => {
+        const dd = state.days[selectedDate] || (state.days[selectedDate] = {});
+        dd.note = note.value;
+        if (!dd.mood && !dd.energy && !dd.note) delete state.days[selectedDate];
+        saveLocal(true); renderStats(); renderMotivation();
+      }, 400);
+    });
+
+    $('#dayNewSession').addEventListener('click', () => { hideOverlay('dayOverlay'); openSessionModal({ date: selectedDate }); });
+    bindSessionActions();
+  }
+
+  /* ═══════ Overlay helpers ═══════ */
+  function showOverlay(id){ $('#'+id).classList.add('on'); document.body.style.overflow = 'hidden'; }
+  function hideOverlay(id){
+    $('#'+id).classList.remove('on');
+    if (!document.querySelector('.overlay.on')) document.body.style.overflow = '';
+  }
+
+  /* ═══════ Экспорт / импорт ═══════ */
+  function exportData(){
+    const payload = {
+      events: state.events, days: state.days, clients: state.clients,
+      sessions: Object.values(state.sessions).map(s => Object.assign({}, s, { audioId: s.audioId ? '…' : null })),
+      meta,
+      note: 'Аудио хранится в IndexedDB на этом устройстве. Скачивайте его отдельно (кнопка ⬇ в каждой встрече).'
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const d = new Date();
+    a.href = url; a.download = `календарь-осинцева-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`;
+    a.click(); URL.revokeObjectURL(url);
+    toast('Копия сохранена в файл');
+  }
+  function importData(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if (!data || typeof data !== 'object') throw new Error('bad');
+        state.events = data.events || {}; state.days = data.days || {};
+        state.clients = data.clients || [];
+        const sess = data.sessions || [];
+        state.sessions = {}; sess.forEach(s => { state.sessions[s.id] = s; });
+        if (data.meta) meta = Object.assign(meta, data.meta);
+        meta.cloud = Object.assign({enabled:false,provider:null,lastSync:null}, meta.cloud||{});
+        meta.achievements = Object.assign({sess5:false,sess10:false,sess25:false,clients5:false,clients10:false,streak7:false,streak14:false,streak30:false}, meta.achievements||{});
+        saveLocal(true); applyTheme(); buildThemePanel();
+        renderGrid(); renderClients(); renderUpcoming(); renderStats(); renderMotivation();
+        toast('Данные загружены');
+      }catch(e){ toast('Файл повреждён'); }
+    };
+    reader.readAsText(file);
+  }
+
+  /* ═══════ Quote ═══════ */
+  function renderQuote(){
+    const q = QUOTES[dayOfYear() % QUOTES.length];
+    $('#quoteText').textContent = q.t;
+    $('#quoteBy').textContent = '— ' + q.a;
+  }
+
+  /* ═══════ Инициализация ═══════ */
+  function init(){
+    loadLocal();
+    applyTheme();
+    buildThemePanel();
+
+    const todayKey = fmt(new Date());
+    const isFirstToday = meta.lastVisit !== todayKey;
+    if (isFirstToday){ meta.lastVisit = todayKey; saveLocal(true); }
+
+    renderQuote();
+    renderMotivation();
+    renderGrid();
+    renderUpcoming();
+    renderStats();
+    renderClients();
+
+    /* Приветствие при первом открытии дня */
+    if (isFirstToday){
+      const p = pick(POPUP_PHRASES);
+      setTimeout(() => popup(p.text, p.icon), 1200);
+    }
+
+    /* Табы */
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        tab.classList.add('active');
+        $('#view-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* Тема */
+    $('#themeBtn').addEventListener('click', e => {
+      e.stopPropagation();
+      if ($('#themePanel').classList.contains('on')) closeThemePanel();
+      else openThemePanel();
+    });
+    $('#themeClose').addEventListener('click', closeThemePanel);
+    $('#modeLight').addEventListener('click', () => { meta.mode = 'light'; applyTheme(); buildThemePanel(); });
+    $('#modeDark').addEventListener('click', () => { meta.mode = 'dark'; applyTheme(); buildThemePanel(); });
+
+    document.addEventListener('click', e => {
+      const panel = $('#themePanel');
+      if (!panel.classList.contains('on')) return;
+      if (panel.contains(e.target)) return;
+      if (e.target.closest('#themeBtn')) return;
+      closeThemePanel();
+    });
+
+    window.addEventListener('resize', () => {
+      if ($('#themePanel').classList.contains('on')) openThemePanel();
+    });
+
+    /* Облако */
+    $('#cloudBtn').addEventListener('click', () => {
+      toast('☁️ Синхронизация появится позже — данные уже хранятся на устройстве');
+    });
+
+    /* Календарь */
+    $('#prevBtn').addEventListener('click', () => { view = new Date(view.getFullYear(), view.getMonth()-1, 1); renderGrid(); renderStats(); });
+    $('#nextBtn').addEventListener('click', () => { view = new Date(view.getFullYear(), view.getMonth()+1, 1); renderGrid(); renderStats(); });
+    $('#todayBtn').addEventListener('click', () => { const n = new Date(); view = new Date(n.getFullYear(), n.getMonth(), 1); renderGrid(); renderStats(); });
+
+    /* Клиенты */
+    $('#addClientBtn').addEventListener('click', () => openClientForm());
+
+    /* Модалки */
+    $('#dayClose').addEventListener('click', () => hideOverlay('dayOverlay'));
+    $('#clientClose').addEventListener('click', () => hideOverlay('clientOverlay'));
+    $('#clientFormClose').addEventListener('click', () => hideOverlay('clientFormOverlay'));
+    $('#sessionClose').addEventListener('click', () => { stopRecording(); resetRecorderUI(); hideOverlay('sessionOverlay'); });
+    $('#cfCancel').addEventListener('click', () => hideOverlay('clientFormOverlay'));
+    $('#sCancel').addEventListener('click', () => { stopRecording(); resetRecorderUI(); hideOverlay('sessionOverlay'); });
+
+    ['dayOverlay','clientOverlay','clientFormOverlay','sessionOverlay'].forEach(id => {
+      $('#'+id).addEventListener('click', e => {
+        if (e.target.id === id){
+          if (id === 'sessionOverlay'){ stopRecording(); resetRecorderUI(); }
+          hideOverlay(id);
+        }
+      });
+    });
+
+    $('#clientForm').addEventListener('submit', submitClientForm);
+
+    /* Диктофон */
+    $('#recBtn').addEventListener('click', () => {
+      if (recorder.mediaRecorder) stopRecording();
+      else startRecording();
+    });
+    $('#recDelete').addEventListener('click', () => {
+      if (!confirm('Удалить запись?')) return;
+      resetRecorderUI();
+      if (sessionDraft.audioId) sessionDraft.removeOldAudio = true;
+    });
+
+    $('#sSave').addEventListener('click', saveSession);
+
+    /* Экспорт/импорт */
+    $('#exportBtn').addEventListener('click', exportData);
+    $('#importBtn').addEventListener('click', () => $('#fileInput').click());
+    $('#fileInput').addEventListener('change', e => {
+      const f = e.target.files[0]; if (f) importData(f); e.target.value = '';
+    });
+
+    /* Esc */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape'){
+        if ($('#themePanel').classList.contains('on')){ closeThemePanel(); return; }
+        const open = document.querySelector('.overlay.on');
+        if (open){
+          if (open.id === 'sessionOverlay'){ stopRecording(); resetRecorderUI(); }
+          hideOverlay(open.id);
+        }
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) renderMotivation();
+    });
+
+    /* Периодический popup — раз в ~25 минут */
+    setInterval(() => {
+      if (document.hidden) return;
+      if (Math.random() < 0.4) maybePopupMotivation();
+    }, 25 * 60 * 1000);
+  }
+
+  /* Запуск */
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  }
+})();
+</script>
+</body>
+</html>
