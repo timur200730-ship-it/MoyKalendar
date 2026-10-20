@@ -1173,11 +1173,32 @@ body.dark .motivation-popup{background:linear-gradient(145deg,#2A2620,#232018)}
     $('#modeLight').classList.toggle('active', meta.mode === 'light');
     $('#modeDark').classList.toggle('active', meta.mode === 'dark');
   }
-  function openThemePanel(){
+    function openThemePanel(){
     const panel = $('#themePanel'), btn = $('#themeBtn');
     const r = btn.getBoundingClientRect();
+    const isMobile = window.innerWidth < 640;
+
     panel.style.top = (r.bottom + 8) + 'px';
-    panel.style.right = Math.max(12, window.innerWidth - r.right) + 'px';
+
+    if (isMobile){
+      /* на телефоне панель идёт на всю ширину через CSS */
+      panel.style.left = '';
+      panel.style.right = '';
+      panel.style.width = '';
+    } else {
+      /* на десктопе считаем правый отступ так, чтобы всё влезло */
+      const panelWidth = Math.min(300, window.innerWidth - 24);
+      let right = window.innerWidth - r.right;
+      if (right < 12) right = 12;
+      /* если левый край вылезает — сдвигаем панель правее */
+      if (window.innerWidth - right - panelWidth < 12){
+        right = Math.max(12, window.innerWidth - panelWidth - 12);
+      }
+      panel.style.right = right + 'px';
+      panel.style.left = 'auto';
+      panel.style.width = panelWidth + 'px';
+    }
+
     panel.classList.add('on');
     buildThemePanel();
   }
