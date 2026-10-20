@@ -638,6 +638,33 @@ body.dark .motivation-popup{background:linear-gradient(145deg,#2A2620,#232018)}
   .theme-panel{width:min(300px,calc(100vw - 24px))}
   .motivation-popup{right:12px;left:12px;max-width:none;bottom:12px}
 }
+  /* ── Кнопка записи на главном экране ── */
+.fab{
+  position:fixed;bottom:22px;right:18px;
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(140deg,#D64545,#A82B2B);color:#FFF;
+  font-size:26px;line-height:1;
+  display:grid;place-items:center;z-index:45;
+  box-shadow:0 10px 26px -8px rgba(192,57,43,.65),0 0 0 3px rgba(255,255,255,.15);
+  transition:.22s cubic-bezier(.2,.8,.3,1);
+  cursor:pointer;border:none;
+}
+.fab:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 14px 32px -10px rgba(192,57,43,.75)}
+.fab:active{transform:scale(.95)}
+@media (max-width:640px){
+  .fab{bottom:16px;right:14px;width:56px;height:56px;font-size:24px}
+}
+
+/* ── Панель цветов: не вылезает за экран на телефоне ── */
+@media (max-width:640px){
+  .theme-panel{
+    left:12px !important;
+    right:12px !important;
+    width:auto !important;
+    transform-origin:top center;
+  }
+  .theme-grid{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
@@ -881,6 +908,7 @@ body.dark .motivation-popup{background:linear-gradient(145deg,#2A2620,#232018)}
   </div>
 </div>
 
+<button class="fab" id="fabNewSession" aria-label="Записать встречу">🎙</button>  
 <div class="toast" id="toast"></div>
 <div class="motivation-popup" id="mpopup">
   <span class="mp-icon" id="mpIcon">✨</span>
